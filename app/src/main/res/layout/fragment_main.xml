@@ -1,0 +1,248 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="workoutapp.tyler.workoutapplication.mainFragment"
+    android:background="@color/colorPrimaryDark">
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="workoutapp.tyler.workoutapplication.MainActivity"
+    tools:showIn="@layout/app_bar_main"
+    android:background="@color/colorPrimaryDark">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dateTextView"
+        android:text="Wednesday, October 26"
+        android:fontFamily="sans-serif"
+        android:textSize="16sp"
+        android:textColor="@color/whiteText"
+        android:layout_marginTop="11dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
+
+        <ToggleButton
+            android:text="ToggleButton"
+            android:id="@+id/toggleButton5"
+            android:textOff="S"
+            android:textOn="S"
+            android:checked="false"
+            android:layout_width="50dp"
+            android:layout_below="@+id/dateTextView"
+            android:layout_toLeftOf="@+id/dateTextView"
+            android:layout_toStartOf="@+id/dateTextView"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginTop="40dp"
+            android:layout_weight="1"
+            android:textAlignment="gravity"
+            android:clickable="false"
+            android:paddingLeft="-12dp"
+            android:paddingBottom="27dp"
+            android:textSize="11sp"
+            android:layout_height="50dp"
+            android:requiresFadingEdge="none" />
+
+        <ToggleButton
+            android:text="ToggleButton"
+            android:id="@+id/toggleButton3"
+            android:textOff="M"
+            android:textOn="M"
+            android:checked="false"
+            android:layout_width="50dp"
+            android:layout_below="@+id/dateTextView"
+            android:layout_toLeftOf="@+id/dateTextView"
+            android:layout_toStartOf="@+id/dateTextView"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginTop="40dp"
+            android:layout_weight="1"
+            android:textAlignment="gravity"
+            android:clickable="false"
+            android:paddingLeft="-12dp"
+            android:paddingBottom="27dp"
+            android:textSize="11sp"
+            android:layout_height="50dp"
+            android:requiresFadingEdge="none" />
+
+        <ToggleButton
+            android:text="ToggleButton"
+            android:id="@+id/toggleButton2"
+            android:textOff="T"
+            android:textOn="T"
+            android:checked="false"
+            android:layout_width="50dp"
+            android:layout_below="@+id/dateTextView"
+            android:layout_toLeftOf="@+id/dateTextView"
+            android:layout_toStartOf="@+id/dateTextView"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginTop="40dp"
+            android:layout_weight="1"
+            android:textAlignment="gravity"
+            android:clickable="false"
+            android:paddingLeft="-12dp"
+            android:paddingBottom="27dp"
+            android:textSize="11sp"
+            android:layout_height="50dp"
+            android:requiresFadingEdge="none" />
+
+        <ToggleButton
+            android:text="ToggleButton"
+            android:id="@+id/toggleButton"
+            android:textOff="W"
+            android:textOn="W"
+            android:checked="false"
+            android:layout_width="50dp"
+            android:layout_below="@+id/dateTextView"
+            android:layout_toLeftOf="@+id/dateTextView"
+            android:layout_toStartOf="@+id/dateTextView"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginTop="40dp"
+            android:layout_weight="1"
+            android:textAlignment="gravity"
+            android:clickable="false"
+            android:paddingLeft="-12dp"
+            android:paddingBottom="27dp"
+            android:textSize="11sp"
+            android:layout_height="50dp"
+            android:requiresFadingEdge="none" />
+
+        <ToggleButton
+            android:text="ToggleButton"
+            android:id="@+id/toggleButton4"
+            android:textOff="T"
+            android:textOn="T"
+            android:checked="false"
+            android:layout_width="50dp"
+            android:layout_below="@+id/dateTextView"
+            android:layout_toLeftOf="@+id/dateTextView"
+            android:layout_toStartOf="@+id/dateTextView"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginTop="40dp"
+            android:layout_weight="1"
+            android:textAlignment="gravity"
+            android:clickable="false"
+            android:paddingLeft="-12dp"
+            android:paddingBottom="27dp"
+            android:textSize="11sp"
+            android:layout_height="50dp"
+            android:requiresFadingEdge="none" />
+
+        <ToggleButton
+            android:text="ToggleButton"
+            android:id="@+id/toggleButton7"
+            android:textOff="F"
+            android:textOn="F"
+            android:layout_width="50dp"
+            android:layout_below="@+id/dateTextView"
+            android:layout_toLeftOf="@+id/dateTextView"
+            android:layout_toStartOf="@+id/dateTextView"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginTop="40dp"
+            android:layout_weight="1"
+            android:checked="false"
+            android:textAlignment="gravity"
+            android:clickable="false"
+            android:paddingLeft="-12dp"
+            android:paddingBottom="27dp"
+            android:textSize="11sp"
+            android:layout_height="50dp"
+            android:requiresFadingEdge="none" />
+
+        <ToggleButton
+            android:text="ToggleButton"
+            android:id="@+id/toggleButton6"
+            android:textOff="S"
+            android:textOn="S"
+            android:checked="false"
+            android:layout_width="50dp"
+            android:layout_below="@+id/dateTextView"
+            android:layout_toLeftOf="@+id/dateTextView"
+            android:layout_toStartOf="@+id/dateTextView"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginTop="40dp"
+            android:layout_weight="1"
+            android:textAlignment="gravity"
+            android:clickable="false"
+            android:paddingLeft="-12dp"
+            android:paddingBottom="27dp"
+            android:textSize="11sp"
+            android:layout_height="50dp"
+            android:requiresFadingEdge="none" />
+
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_below="@+id/dateTextView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="83dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:text="Today: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/today"
+                android:textColor="@color/whiteText"
+                android:textSize="16sp"
+                android:layout_weight="1"
+                android:textAlignment="center" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:text="15 Reps, Week 2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/todayDiscText"
+                android:layout_weight="1"
+                android:textColor="@color/whiteText"
+                android:textAlignment="center" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+        </TableRow>
+    </TableLayout>
+
+</RelativeLayout>
