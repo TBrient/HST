@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     NavigationView navigationView = null;
     Toolbar toolbar = null;
+    private calculationFragment calculationFragment;
+    private mainFragment mainFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +38,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mainFragment = new mainFragment();
+        calculationFragment = new calculationFragment();
+
         //Set fragment
-        mainFragment fragment = new mainFragment();
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentContainer, fragment);
+        fragmentTransaction.replace(R.id.fragmentContainer, mainFragment);
         fragmentTransaction.commit();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -60,14 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Gets Text View
-//        TextView textView;
-//        textView = (TextView)findViewById(R.id.dateTextView);
-//
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE, MMMM d", Locale.US);
-//        Calendar c = Calendar.getInstance();
-//        Date date = c.getTime();
-//        textView.setText(simpleDateFormat.format(date));
+
     }
 
     @Override
@@ -109,14 +106,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            mainFragment fragment = new mainFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragmentContainer, fragment);
+            fragmentTransaction.replace(R.id.fragmentContainer, mainFragment);
             fragmentTransaction.commit();
         } else if (id == R.id.nav_gallery) {
-            calculationFragment fragment = new calculationFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragmentContainer, fragment);
+            fragmentTransaction.replace(R.id.fragmentContainer, calculationFragment);
             fragmentTransaction.commit();
         } else if (id == R.id.nav_slideshow) {
 

@@ -202,7 +202,8 @@
         android:layout_below="@+id/dateTextView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="83dp">
+        android:layout_marginTop="83dp"
+        android:id="@+id/workoutLayout">
 
         <TableRow
             android:layout_width="match_parent"
@@ -221,10 +222,11 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:id="@+id/DescriptionRow">
 
             <TextView
-                android:text="15 Reps, Week 2"
+                android:text="15 Reps, Day 2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/todayDiscText"
@@ -234,15 +236,6 @@
 
         </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-        </TableRow>
     </TableLayout>
 
 </RelativeLayout>
