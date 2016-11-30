@@ -8,20 +8,20 @@ import java.util.ArrayList;
 
 public class UserData {
 
-    private ArrayList<Workout> workouts;
+    private ArrayList<Exercise> exercises;
     private int workoutNum; //1-18 Number of Days worked out in that session so far
 
     public UserData(int workoutNumber){
-        workouts = new ArrayList<>();
+        exercises = new ArrayList<>();
         workoutNum = workoutNumber;
     }
 
-    public ArrayList<Workout> getWorkouts() {
-        return workouts;
+    public ArrayList<Exercise> getExercises() {
+        return exercises;
     }
 
-    public void addWorkout(Workout workout) {
-        this.workouts.add(workout);
+    public void addWorkout(Exercise exercise) {
+        this.exercises.add(exercise);
     }
 
     public int getWorkoutNum() {
@@ -32,11 +32,11 @@ public class UserData {
         this.workoutNum = workoutNum;
     }
 
-    public void setMainWorkout(Workout workout) {
-        this.workouts.add(0, workout);
+    public void setMainWorkout(Exercise exercise) {
+        this.exercises.add(0, exercise);
     }
 
-    public Workout getWorkout(int index) {
-        return workouts.get(index);
+    public Exercise getWorkout(int index) {
+        return exercises.get(index);
     }
 }
