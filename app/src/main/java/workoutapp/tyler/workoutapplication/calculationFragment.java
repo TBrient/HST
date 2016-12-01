@@ -12,6 +12,8 @@ import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +28,7 @@ public class calculationFragment extends Fragment  {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private ArrayList<Exercise> exercises;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -72,6 +75,10 @@ public class calculationFragment extends Fragment  {
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         return view;
+    }
+
+    private void initializeData(){
+        exercises = new ArrayList<>();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
