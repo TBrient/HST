@@ -29,6 +29,7 @@ public class calculationFragment extends Fragment  {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private ArrayList<Exercise> exercises;
+    private RVAdapter adapter;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -70,15 +71,21 @@ public class calculationFragment extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        initializeData();
+        adapter = new RVAdapter(exercises);
         //Creates a view
         View view = inflater.inflate(R.layout.fragment_calculation , container, false);
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerView);
+        recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         return view;
     }
 
     private void initializeData(){
         exercises = new ArrayList<>();
+        exercises.add(new Exercise("Bench", 3, 12));
+        exercises.add(new Exercise("Lat Pulldowns", 3, 12));
+        exercises.add(new Exercise("Seated Rows", 3, 12));
     }
 
     // TODO: Rename method, update argument and hook method into UI event
