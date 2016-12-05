@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,9 +76,11 @@ public class calculationFragment extends Fragment  {
         initializeData();
         adapter = new RVAdapter(exercises);
         //Creates a view
+        LinearLayoutManager llm = new LinearLayoutManager(this.getActivity());
         View view = inflater.inflate(R.layout.fragment_calculation , container, false);
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerView);
         recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(llm);
         recyclerView.setHasFixedSize(true);
         return view;
     }

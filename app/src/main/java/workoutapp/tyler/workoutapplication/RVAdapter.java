@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
  * Created by Tyler on 11/30/2016.
  */
 
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> {
+public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ExerciseViewHolder> {
 
     ArrayList<Exercise> exercises;
 
@@ -34,31 +33,31 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
 
 
     @Override
-    public PersonViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public ExerciseViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view, viewGroup, false);
-        PersonViewHolder pvh = new PersonViewHolder(v);
-        return pvh;
+        ExerciseViewHolder evh = new ExerciseViewHolder(v);
+        return evh;
     }
 
     @Override
-    public void onBindViewHolder(PersonViewHolder personViewHolder, int i) {
-        personViewHolder.exerciseName.setText(exercises.get(i).getExerciseName());
-        personViewHolder.sets.setText(exercises.get(i).getNumberOfSets());
-        personViewHolder.reps.setImageResource(exercises.get(i).getNumberOfReps());
+    public void onBindViewHolder(ExerciseViewHolder exerciseViewHolder, int i) {
+        exerciseViewHolder.exerciseName.setText(exercises.get(i).getExerciseName());
+        exerciseViewHolder.sets.setText(Integer.toString(exercises.get(i).getNumberOfSets()) + " Sets");
+        exerciseViewHolder.reps.setText(Integer.toString(exercises.get(i).getNumberOfReps()) + " Reps");
     }
 
-    public static class PersonViewHolder extends RecyclerView.ViewHolder {
+    public static class ExerciseViewHolder extends RecyclerView.ViewHolder {
         public CardView cv;
         public TextView exerciseName;
         public TextView sets;
-        public ImageView reps;
+        public TextView reps;
 
-        PersonViewHolder(View cardView) {
+        ExerciseViewHolder(View cardView) {
             super(cardView);
             cv = (CardView) cardView.findViewById(R.id.cv);
-            exerciseName = (TextView) cardView.findViewById(R.id.person_name);
-            sets = (TextView) cardView.findViewById(R.id.person_age);
-            reps = (ImageView) cardView.findViewById(R.id.person_photo);
+            exerciseName = (TextView) cardView.findViewById(R.id.exercise_name);
+            sets = (TextView) cardView.findViewById(R.id.sets);
+            reps = (TextView) cardView.findViewById(R.id.reps);
         }
     }
 }
