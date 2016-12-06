@@ -11,7 +11,10 @@
         android:layout_margin="5dp"
         app:cardCornerRadius="5dp"
         android:id="@+id/cv"
-        >
+        app:cardBackgroundColor="#424242"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:foregroundTint="@android:color/white">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -25,14 +28,14 @@
                 android:id="@+id/exercise_name"
                 android:layout_alignParentTop="true"
                 android:textSize="30sp"
-                />
+                android:textColor="@color/whiteText" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/sets"
                 android:layout_below="@+id/exercise_name"
-                />
+                android:textColor="#bdbdbd" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -43,7 +46,7 @@
                 android:layout_toEndOf="@+id/sets"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                />
+                android:textColor="#bdbdbd" />
 
         </RelativeLayout>
 

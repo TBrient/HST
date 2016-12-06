@@ -58,6 +58,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ExerciseViewHolder
             exerciseName = (TextView) cardView.findViewById(R.id.exercise_name);
             sets = (TextView) cardView.findViewById(R.id.sets);
             reps = (TextView) cardView.findViewById(R.id.reps);
+            cv.setOnClickListener(new CardView.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
         }
     }
 }
