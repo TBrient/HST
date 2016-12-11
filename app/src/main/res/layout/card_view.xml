@@ -13,8 +13,7 @@
         android:id="@+id/cv"
         app:cardBackgroundColor="#424242"
         android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:foregroundTint="@android:color/white">
+        android:foreground="@drawable/selectable_item_background">
 
         <RelativeLayout
             android:layout_width="match_parent"

@@ -4,35 +4,24 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-
-import java.util.ArrayList;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link calculationFragment.OnFragmentInteractionListener} interface
+ * {@link newExerciseFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link calculationFragment#newInstance} factory method to
+ * Use the {@link newExerciseFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class calculationFragment extends Fragment  {
+public class newExerciseFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private ArrayList<Exercise> exercises;
-    private RVAdapter adapter;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -40,7 +29,7 @@ public class calculationFragment extends Fragment  {
 
     private OnFragmentInteractionListener mListener;
 
-    public calculationFragment() {
+    public newExerciseFragment() {
         // Required empty public constructor
     }
 
@@ -50,11 +39,11 @@ public class calculationFragment extends Fragment  {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment calculationFragment.
+     * @return A new instance of fragment newExerciseFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static calculationFragment newInstance(String param1, String param2) {
-        calculationFragment fragment = new calculationFragment();
+    public static newExerciseFragment newInstance(String param1, String param2) {
+        newExerciseFragment fragment = new newExerciseFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -74,24 +63,8 @@ public class calculationFragment extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        initializeData();
-        adapter = new RVAdapter(exercises);
-
-        //Creates a view
-        LinearLayoutManager llm = new LinearLayoutManager(this.getActivity());
-        View view = inflater.inflate(R.layout.fragment_calculation , container, false);
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerView);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(llm);
-        recyclerView.setHasFixedSize(true);
-        return view;
-    }
-
-    private void initializeData(){
-        exercises = new ArrayList<>();
-        exercises.add(new Exercise("Bench", 3, 12));
-        exercises.add(new Exercise("Lat Pulldowns", 3, 12));
-        exercises.add(new Exercise("Seated Rows", 3, 12));
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_new_exercise, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
