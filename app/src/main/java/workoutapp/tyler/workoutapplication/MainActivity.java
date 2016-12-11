@@ -23,7 +23,7 @@ import java.util.Locale;
 
 import org.w3c.dom.Text;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, calculationFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, calculationFragment.OnFragmentInteractionListener, newExerciseFragment.OnFragmentInteractionListener {
 
     NavigationView navigationView = null;
     Toolbar toolbar = null;
@@ -131,5 +131,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    public workoutapp.tyler.workoutapplication.calculationFragment getCalculationFragment() {
+        return calculationFragment;
+    }
+
+    public workoutapp.tyler.workoutapplication.mainFragment getMainFragment() {
+        return mainFragment;
     }
 }
