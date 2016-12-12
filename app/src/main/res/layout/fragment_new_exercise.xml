@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="workoutapp.tyler.workoutapplication.newExerciseFragment">
+    tools:context="workoutapp.tyler.workoutapplication.newExerciseFragment"
+    android:background="@color/windowBackground">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -37,7 +38,8 @@
         android:layout_marginTop="18dp"
         android:id="@+id/autoCompleteTextView"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/whiteText" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -66,7 +68,8 @@
                 android:layout_alignRight="@+id/editText3"
                 android:layout_alignEnd="@+id/editText3"
                 android:id="@+id/editText4"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textColor="@color/whiteText" />
 
             <TextView
                 android:text="Sets"
@@ -74,7 +77,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/textView4"
                 android:layout_weight="1"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@color/whiteText" />
 
         </LinearLayout>
 
@@ -97,7 +101,8 @@
                 android:layout_alignRight="@+id/editText3"
                 android:layout_alignEnd="@+id/editText3"
                 android:id="@+id/editText4"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textColor="@color/whiteText" />
 
             <TextView
                 android:text="Reps"
@@ -105,19 +110,20 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/textView4"
                 android:layout_weight="1"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@color/whiteText" />
 
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_below="@+id/linearLayout"
             android:layout_alignLeft="@+id/linearLayout"
             android:layout_alignStart="@+id/linearLayout"
             android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content">
 
             <EditText
                 android:layout_width="50dp"
@@ -130,11 +136,14 @@
                 android:id="@+id/editText4"
                 android:layout_weight="1" />
 
-            <Spinner
-                android:layout_width="match_parent"
+            <TextView
+                android:text="lbs"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/spinner"
-                android:layout_weight="1" />
+                android:id="@+id/textView2"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:textColor="@color/whiteText" />
 
         </LinearLayout>
     </LinearLayout>
