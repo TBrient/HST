@@ -29,11 +29,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Toolbar toolbar = null;
     private calculationFragment calculationFragment;
     private mainFragment mainFragment;
+    private UserData userData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        userData = new UserData();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -139,5 +142,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public workoutapp.tyler.workoutapplication.mainFragment getMainFragment() {
         return mainFragment;
+    }
+
+    public UserData getUserData() {
+        return userData;
     }
 }

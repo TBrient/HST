@@ -9,11 +9,11 @@ import java.util.ArrayList;
 public class UserData {
 
     private ArrayList<Exercise> exercises;
-    private int workoutNum; //1-18 Number of Days worked out in that session so far
+    //private int workoutNum; //1-18 Number of Days worked out in that session so far
 
-    public UserData(int workoutNumber){
+    public UserData(){
         exercises = new ArrayList<>();
-        workoutNum = workoutNumber;
+        //workoutNum = workoutNumber;
     }
 
     public ArrayList<Exercise> getExercises() {
@@ -24,13 +24,13 @@ public class UserData {
         this.exercises.add(exercise);
     }
 
-    public int getWorkoutNum() {
-        return workoutNum;
-    }
-
-    public void setWorkoutNum(int workoutNum) {
-        this.workoutNum = workoutNum;
-    }
+//    public int getWorkoutNum() {
+//        return workoutNum;
+//    }
+//
+//    public void setWorkoutNum(int workoutNum) {
+//        this.workoutNum = workoutNum;
+//    }
 
     public void setMainWorkout(Exercise exercise) {
         this.exercises.add(0, exercise);

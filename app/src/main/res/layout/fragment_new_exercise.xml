@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="workoutapp.tyler.workoutapplication.newExerciseFragment"
-    android:background="@color/windowBackground">
+    android:background="@color/windowBackground"
+    android:id="@+id/newExerciseLayout">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -19,45 +20,41 @@
         android:layout_marginRight="52dp"
         android:layout_marginEnd="52dp" />
 
-    <Button
-        android:text="Cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/cancelButton"
-        android:layout_alignBaseline="@+id/saveButton"
-        android:layout_alignBottom="@+id/saveButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="58dp"
-        android:layout_marginStart="58dp" />
-
-    <AutoCompleteTextView
-        android:text="AutoCompleteTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:id="@+id/autoCompleteTextView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/whiteText" />
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/autoCompleteTextView"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal">
+
+        <AutoCompleteTextView
+            android:text="AutoCompleteTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:id="@+id/nameAutoComplete"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/whiteText" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_below="@+id/linearLayout5"
             android:layout_alignRight="@+id/saveButton"
             android:layout_alignEnd="@+id/saveButton"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp">
+
+            <TextView
+                android:text="Sets: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/setsText"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:textColor="@color/whiteText" />
 
             <EditText
                 android:layout_width="50dp"
@@ -67,18 +64,10 @@
                 android:layout_below="@+id/editText3"
                 android:layout_alignRight="@+id/editText3"
                 android:layout_alignEnd="@+id/editText3"
-                android:id="@+id/editText4"
+                android:id="@+id/setsInput"
                 android:layout_weight="1"
-                android:textColor="@color/whiteText" />
-
-            <TextView
-                android:text="Sets"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView4"
-                android:layout_weight="1"
-                android:textSize="18sp"
-                android:textColor="@color/whiteText" />
+                android:textColor="@color/whiteText"
+                android:gravity="right|center_vertical" />
 
         </LinearLayout>
 
@@ -86,11 +75,19 @@
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp">
+
+            <TextView
+                android:text="Reps: "
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/repsText"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:textColor="@color/whiteText" />
 
             <EditText
                 android:layout_width="50dp"
@@ -100,18 +97,10 @@
                 android:layout_below="@+id/editText3"
                 android:layout_alignRight="@+id/editText3"
                 android:layout_alignEnd="@+id/editText3"
-                android:id="@+id/editText4"
+                android:id="@+id/repsInput"
                 android:layout_weight="1"
-                android:textColor="@color/whiteText" />
-
-            <TextView
-                android:text="Reps"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView4"
-                android:layout_weight="1"
-                android:textSize="18sp"
-                android:textColor="@color/whiteText" />
+                android:textColor="@color/whiteText"
+                android:gravity="right|center_vertical" />
 
         </LinearLayout>
 
@@ -125,6 +114,15 @@
             android:layout_marginTop="20dp"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:text="Weight:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/weightText"
+                android:layout_weight="1"
+                android:textColor="@color/whiteText"
+                android:textSize="18sp" />
+
             <EditText
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
@@ -133,19 +131,33 @@
                 android:layout_below="@+id/editText3"
                 android:layout_alignRight="@+id/editText3"
                 android:layout_alignEnd="@+id/editText3"
-                android:id="@+id/editText4"
-                android:layout_weight="1" />
+                android:id="@+id/initialWeightInput"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:textColor="@color/whiteText" />
 
             <TextView
                 android:text="lbs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView2"
+                android:id="@+id/lbs"
                 android:layout_weight="1"
                 android:textSize="18sp"
                 android:textColor="@color/whiteText" />
 
         </LinearLayout>
     </LinearLayout>
+
+    <Button
+        android:text="Cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cancelButton"
+        android:layout_marginLeft="58dp"
+        android:layout_marginStart="58dp"
+        android:layout_alignBaseline="@+id/saveButton"
+        android:layout_alignBottom="@+id/saveButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

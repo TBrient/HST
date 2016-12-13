@@ -3,10 +3,19 @@ package workoutapp.tyler.workoutapplication;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 
 /**
@@ -63,8 +72,56 @@ public class newExerciseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_new_exercise, container, false);
+
+        Button cancelButton = (Button)view.findViewById(R.id.cancelButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity mainActivity = (MainActivity)getActivity();
+                FragmentTransaction fragmentTransaction = mainActivity.getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.enter_from_top, R.anim.exit_to_bottom);
+                fragmentTransaction.replace(R.id.fragmentContainer, mainActivity.getCalculationFragment());
+                fragmentTransaction.commit();
+            }
+        });
+
+        Button saveButton = (Button)view.findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                View outerView = (View)view.getParent();
+                MainActivity mainActivity = (MainActivity)getActivity();
+                ArrayList<Exercise> exercises = mainActivity.getUserData().getExercises();
+                EditText setInput = (EditText)outerView.findViewById(R.id.setsInput);
+                EditText repInput = (EditText)outerView.findViewById(R.id.repsInput);
+                EditText weightInput = (EditText)outerView.findViewById(R.id.initialWeightInput);
+                AutoCompleteTextView nameInput = (AutoCompleteTextView)outerView.findViewById(R.id.nameAutoComplete);
+
+                if (setInput.getText().toString().equals("") || repInput.getText().toString().equals("") || weightInput.getText().toString().equals("") || weightInput.getText().toString().equals("")) {
+                    Snackbar snackbar = Snackbar.make(outerView, "Please fill out all of the text fields", Snackbar.LENGTH_LONG);
+                    View snackBarView = snackbar.getView();
+                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPopup));
+                    TextView textView = (TextView)snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(getResources().getColor(R.color.colorAccent));
+                    snackbar.show();
+                } else {
+                    int startingSets = Integer.valueOf(setInput.getText().toString());
+                    int startingReps = Integer.valueOf(setInput.getText().toString());
+                    int startingWeight = Integer.valueOf(weightInput.getText().toString());
+                    String exerciseName =nameInput.getText().toString();
+                    Exercise tempExercise = new Exercise(exerciseName, startingSets, startingReps);
+                    tempExercise.addCompleteSet(startingWeight);
+                    exercises.add(tempExercise);
+                    FragmentTransaction fragmentTransaction = mainActivity.getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.setCustomAnimations(R.anim.enter_from_top, R.anim.exit_to_bottom);
+                    fragmentTransaction.replace(R.id.fragmentContainer, mainActivity.getCalculationFragment());
+                    fragmentTransaction.commit();
+             }
+            }
+        });
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_new_exercise, container, false);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

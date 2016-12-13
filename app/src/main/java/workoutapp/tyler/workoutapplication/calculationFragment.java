@@ -88,7 +88,8 @@ public class calculationFragment extends Fragment  {
     }
 
     private void initializeData(){
-        exercises = new ArrayList<>();
+        MainActivity mainActivity = (MainActivity)getActivity();
+        exercises = mainActivity.getUserData().getExercises();
         exercises.add(new Exercise("Bench", 3, 12));
         exercises.add(new Exercise("Lat Pulldowns", 3, 12));
         exercises.add(new Exercise("Seated Rows", 3, 12));

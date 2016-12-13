@@ -23,7 +23,6 @@ import java.util.Locale;
  */
 public class mainFragment extends Fragment {
 
-    private UserData userData = new UserData(5); //TODO: get main workout from external source (use set/getArguments)
 
     public mainFragment() {
         // Required empty public constructor
