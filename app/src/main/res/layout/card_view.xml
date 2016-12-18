@@ -20,13 +20,16 @@
             android:padding="16dp"
             >
 
-            <TextView
+            <workoutapp.tyler.workoutapplication.AutoResizeTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/exercise_name"
                 android:layout_alignParentTop="true"
+                android:maxLines="1"
                 android:textSize="30sp"
-                android:textColor="@color/whiteText" />
+                android:textColor="@color/whiteText"
+                android:paddingRight="125dp"
+                android:paddingEnd="100dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -45,6 +48,17 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:textColor="#bdbdbd" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/previousWeight"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/whiteText"
+                android:textSize="30sp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp" />
 
         </RelativeLayout>
 

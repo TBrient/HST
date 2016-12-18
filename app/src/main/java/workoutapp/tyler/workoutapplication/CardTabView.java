@@ -3,36 +3,30 @@ package workoutapp.tyler.workoutapplication;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.TextViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.TextView;
 
-import java.util.ArrayList;
-
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link calculationFragment.OnFragmentInteractionListener} interface
+ * {@link CardTabView.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link calculationFragment#newInstance} factory method to
+ * Use the {@link CardTabView#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class calculationFragment extends Fragment  {
+public class CardTabView extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private ArrayList<Exercise> exercises;
-    private RVAdapter adapter;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -40,7 +34,7 @@ public class calculationFragment extends Fragment  {
 
     private OnFragmentInteractionListener mListener;
 
-    public calculationFragment() {
+    public CardTabView() {
         // Required empty public constructor
     }
 
@@ -50,11 +44,11 @@ public class calculationFragment extends Fragment  {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment calculationFragment.
+     * @return A new instance of fragment CardTabView.
      */
     // TODO: Rename and change types and number of parameters
-    public static calculationFragment newInstance(String param1, String param2) {
-        calculationFragment fragment = new calculationFragment();
+    public static CardTabView newInstance(String param1, String param2) {
+        CardTabView fragment = new CardTabView();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -71,26 +65,26 @@ public class calculationFragment extends Fragment  {
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        initializeData();
-        adapter = new RVAdapter(exercises);
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        adapter.addFragment(new addWeightFragment(), "Add Weight");
+        adapter.addFragment(new calculationFragment(), "Graphs");
+        viewPager.setAdapter(adapter);
+    }
 
-        //Creates a view
-        LinearLayoutManager llm = new LinearLayoutManager(this.getActivity());
-        View view = inflater.inflate(R.layout.fragment_calculation , container, false);
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerView);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(llm);
-        recyclerView.setHasFixedSize(true);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_tab_view, container, false);
+        ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+
+        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+        // Inflate the layout for this fragment
         return view;
     }
 
-    private void initializeData(){
-        MainActivity mainActivity = (MainActivity)getActivity();
-        exercises = mainActivity.getUserData().getExercises();
-    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

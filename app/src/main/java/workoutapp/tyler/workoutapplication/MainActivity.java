@@ -23,13 +23,14 @@ import java.util.Locale;
 
 import org.w3c.dom.Text;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, calculationFragment.OnFragmentInteractionListener, newExerciseFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, addWeightFragment.OnFragmentInteractionListener,CardTabView.OnFragmentInteractionListener, calculationFragment.OnFragmentInteractionListener, newExerciseFragment.OnFragmentInteractionListener {
 
     NavigationView navigationView = null;
     Toolbar toolbar = null;
     private calculationFragment calculationFragment;
     private mainFragment mainFragment;
     private UserData userData;
+    private Exercise cardViewExercisePressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,5 +147,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public UserData getUserData() {
         return userData;
+    }
+
+    public void setExercisePressed(Exercise e){
+        cardViewExercisePressed = e;
+    }
+
+    public Exercise getExercisePressed(){
+        return cardViewExercisePressed;
     }
 }

@@ -4,35 +4,27 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-
-import java.util.ArrayList;
-
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link calculationFragment.OnFragmentInteractionListener} interface
+ * {@link addWeightFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link calculationFragment#newInstance} factory method to
+ * Use the {@link addWeightFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class calculationFragment extends Fragment  {
+public class addWeightFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private ArrayList<Exercise> exercises;
-    private RVAdapter adapter;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -40,7 +32,7 @@ public class calculationFragment extends Fragment  {
 
     private OnFragmentInteractionListener mListener;
 
-    public calculationFragment() {
+    public addWeightFragment() {
         // Required empty public constructor
     }
 
@@ -50,11 +42,11 @@ public class calculationFragment extends Fragment  {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment calculationFragment.
+     * @return A new instance of fragment addWeightFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static calculationFragment newInstance(String param1, String param2) {
-        calculationFragment fragment = new calculationFragment();
+    public static addWeightFragment newInstance(String param1, String param2) {
+        addWeightFragment fragment = new addWeightFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -74,22 +66,32 @@ public class calculationFragment extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        initializeData();
-        adapter = new RVAdapter(exercises);
+        View view = inflater.inflate(R.layout.fragment_add_weight, container, false);
+        TextView exerciseName = (TextView)view.findViewById(R.id.ExerciseName);
+        MainActivity activity = (MainActivity)getActivity();
 
-        //Creates a view
-        LinearLayoutManager llm = new LinearLayoutManager(this.getActivity());
-        View view = inflater.inflate(R.layout.fragment_calculation , container, false);
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerView);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(llm);
-        recyclerView.setHasFixedSize(true);
+        final Exercise exercise = activity.getExercisePressed();
+        exerciseName.setText(exercise.getExerciseName());
+
+        EditText setsDefault = (EditText)view.findViewById(R.id.setsCheck);
+        EditText repsDefault = (EditText)view.findViewById(R.id.repsCheck);
+
+        setsDefault.setText(exercise.getNumberOfSets());
+        repsDefault.setText(exercise.getNumberOfReps());
+
+//        Button saveButton = (Button)view.findViewById(R.id.saveButton);
+//        saveButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                exercise.addSet();
+//            }
+//        });
+
+
+        Button cancelButton = (Button)view.findViewById(R.id.cancelButton);
+
+        // Inflate the layout for this fragment
         return view;
-    }
-
-    private void initializeData(){
-        MainActivity mainActivity = (MainActivity)getActivity();
-        exercises = mainActivity.getUserData().getExercises();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

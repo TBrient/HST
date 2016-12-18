@@ -2,9 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="workoutapp.tyler.workoutapplication.newExerciseFragment"
-    android:background="@color/windowBackground"
-    android:id="@+id/newExerciseLayout">
+    tools:context=".addWeightFragment"
+    android:background="@color/windowBackground">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -15,16 +14,16 @@
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal">
 
-        <AutoCompleteTextView
-            android:layout_width="wrap_content"
+        <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:id="@+id/nameAutoComplete"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
+            android:id="@+id/ExerciseName"
+            android:textAlignment="center"
             android:textColor="@color/whiteText"
-            android:hint="Exercise"
-            android:textColorHint="@color/hintColor"/>
+            android:textSize="18sp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -53,7 +52,7 @@
                 android:layout_below="@+id/editText3"
                 android:layout_alignRight="@+id/editText3"
                 android:layout_alignEnd="@+id/editText3"
-                android:id="@+id/setsInput"
+                android:id="@+id/setsCheck"
                 android:layout_weight="1"
                 android:textColor="@color/whiteText"
                 android:gravity="right|center_vertical" />
@@ -86,7 +85,7 @@
                 android:layout_below="@+id/editText3"
                 android:layout_alignRight="@+id/editText3"
                 android:layout_alignEnd="@+id/editText3"
-                android:id="@+id/repsInput"
+                android:id="@+id/repsCheck"
                 android:layout_weight="1"
                 android:textColor="@color/whiteText"
                 android:gravity="right|center_vertical" />
@@ -120,7 +119,7 @@
                 android:layout_below="@+id/editText3"
                 android:layout_alignRight="@+id/editText3"
                 android:layout_alignEnd="@+id/editText3"
-                android:id="@+id/initialWeightInput"
+                android:id="@+id/WeightInput"
                 android:layout_weight="1"
                 android:gravity="right|center_vertical"
                 android:textColor="@color/whiteText" />
@@ -154,11 +153,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/cancelButton"
-        android:layout_marginLeft="58dp"
-        android:layout_marginStart="58dp"
+        android:layout_marginLeft="51dp"
+        android:layout_marginStart="51dp"
         android:layout_alignBaseline="@+id/saveButton"
         android:layout_alignBottom="@+id/saveButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-
 </RelativeLayout>

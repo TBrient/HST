@@ -40,15 +40,17 @@ public class Exercise {
         this.numberOfReps = numberOfReps;
     }
 
-    public void addCompleteSet(int weight){
+    public void addSet(int weight, int sets, int reps){ //TODO: Add a date insert option
         Calendar c = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.US);
         Date date = c.getTime();
         int dateInt = Integer.valueOf(simpleDateFormat.format(date));
 
-        System.out.println(dateInt);
-
-        completedWeights.add(new int[]{});
+        if (sets < numberOfSets || reps < numberOfReps) {
+            incompleteWeights.add(new int[]{weight, sets, reps, dateInt});
+        } else {
+            completedWeights.add(new int[]{weight, dateInt});
+        }
     }
 
     public String getExerciseName() {

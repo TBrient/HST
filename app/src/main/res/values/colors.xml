@@ -6,4 +6,5 @@
     <color name="whiteText">#ffffff</color>
     <color name="windowBackground">#303030</color>
     <color name="colorPopup">#424242</color>
+    <color name="hintColor">#64ffffff</color>
 </resources>

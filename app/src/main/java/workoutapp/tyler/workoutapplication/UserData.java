@@ -13,6 +13,7 @@ public class UserData {
 
     public UserData(){
         exercises = new ArrayList<>();
+        exercises.add(new Exercise("Create New Exercise", -1, -1));
         //workoutNum = workoutNumber;
     }
 
