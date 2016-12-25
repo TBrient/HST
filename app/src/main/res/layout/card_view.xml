@@ -57,8 +57,21 @@
                 android:layout_alignParentEnd="true"
                 android:textColor="@color/whiteText"
                 android:textSize="30sp"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="15dp" />
+                android:layout_marginTop="35dp"
+                android:layout_marginBottom="-10dp" />
+
+            <Button
+                android:text="X"
+                android:id="@+id/removeExerciseButton"
+                android:background="@color/colorPopup"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="@+id/previousWeight"
+                android:layout_marginBottom="100dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginRight="-10dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
 
         </RelativeLayout>
 

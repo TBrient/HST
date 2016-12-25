@@ -1,5 +1,6 @@
 package workoutapp.tyler.workoutapplication;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,22 +16,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 import org.w3c.dom.Text;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, addWeightFragment.OnFragmentInteractionListener,CardTabView.OnFragmentInteractionListener, calculationFragment.OnFragmentInteractionListener, newExerciseFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements graphFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener, addWeightFragment.OnFragmentInteractionListener,CardTabView.OnFragmentInteractionListener, calculationFragment.OnFragmentInteractionListener, newExerciseFragment.OnFragmentInteractionListener {
 
     NavigationView navigationView = null;
     Toolbar toolbar = null;
     private calculationFragment calculationFragment;
     private mainFragment mainFragment;
     private UserData userData;
-    private Exercise cardViewExercisePressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_send) {
 
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -149,11 +153,47 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return userData;
     }
 
-    public void setExercisePressed(Exercise e){
-        cardViewExercisePressed = e;
+    private void saveData(){
+        String fileName = "UserData";
+        FileOutputStream outputStream;
+        ArrayList<Exercise> exercises = userData.getExercises();
+        try {
+            outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+            objectOutputStream.writeObject(exercises);
+            objectOutputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public Exercise getExercisePressed(){
-        return cardViewExercisePressed;
+    private void getData(){
+        String fileName = "UserData";
+        FileInputStream inputStream;
+        ArrayList<Exercise> returnList = null;
+        try {
+            inputStream = openFileInput(fileName);
+            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+            returnList = (ArrayList<Exercise>)(objectInputStream.readObject());
+            objectInputStream.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        if (returnList != null) {
+            userData.setExercises(returnList);
+        }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getData();
+    }
+
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -101,8 +102,11 @@ public class newExerciseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_exercise, container, false);
-
         setupUI(view);
+
+        MainActivity mainActivity = (MainActivity)getActivity();
+        ActionBar actionBar = mainActivity.getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         Button cancelButton = (Button)view.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -137,11 +141,11 @@ public class newExerciseFragment extends Fragment {
                     snackbar.show();
                 } else {
                     int startingSets = Integer.valueOf(setInput.getText().toString());
-                    int startingReps = Integer.valueOf(setInput.getText().toString());
+                    int startingReps = Integer.valueOf(repInput.getText().toString());
                     int startingWeight = Integer.valueOf(weightInput.getText().toString());
                     String exerciseName =nameInput.getText().toString();
                     Exercise tempExercise = new Exercise(exerciseName, startingSets, startingReps);
-                    tempExercise.addCompleteSet(startingWeight);
+                    tempExercise.addSet(startingWeight, startingSets, startingReps);
                     exercises.add(0, tempExercise);
                     FragmentTransaction fragmentTransaction = mainActivity.getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.setCustomAnimations(R.anim.enter_from_top, R.anim.exit_to_bottom);

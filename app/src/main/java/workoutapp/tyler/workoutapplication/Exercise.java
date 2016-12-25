@@ -1,5 +1,6 @@
 package workoutapp.tyler.workoutapplication;
 
+import java.io.Serializable;
 import java.sql.SQLOutput;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,15 +12,15 @@ import java.util.Locale;
  * Created by tyler_brient on 11/22/16.
  */
 
-public class Exercise {
+public class Exercise implements Serializable{
 
     private String exerciseName;
 
     private int numberOfSets, numberOfReps;
 
-    private ArrayList<int[]> completedWeights = new ArrayList<>(); //First Entry: Weight, Second Entry: Date
+    private ArrayList<Object[]> completedWeights = new ArrayList<>(); //First Entry: Weight, Second Entry: Date
 
-    private ArrayList<int[]> incompleteWeights = new ArrayList<>(); //First entry: Weight, Second Entry: Set count, Third Entry: Rep Count, Fourth Entry: Date
+    private ArrayList<Object[]> incompleteWeights = new ArrayList<>(); //First entry: Weight, Second Entry: Set count, Third Entry: Rep Count, Fourth Entry: Date
 
 
     public Exercise(String Name, int setNum, int repNum){
@@ -42,14 +43,12 @@ public class Exercise {
 
     public void addSet(int weight, int sets, int reps){ //TODO: Add a date insert option
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.US);
         Date date = c.getTime();
-        int dateInt = Integer.valueOf(simpleDateFormat.format(date));
 
         if (sets < numberOfSets || reps < numberOfReps) {
-            incompleteWeights.add(new int[]{weight, sets, reps, dateInt});
+            incompleteWeights.add(new Object[]{weight, sets, reps, date});
         } else {
-            completedWeights.add(new int[]{weight, dateInt});
+            completedWeights.add(new Object[]{weight, date});
         }
     }
 
@@ -65,11 +64,11 @@ public class Exercise {
         return numberOfReps;
     }
 
-    public ArrayList<int[]> getCompletedWeights() {
+    public ArrayList<Object[]> getCompletedWeights() {
         return completedWeights;
     }
 
-    public ArrayList<int[]> getIncompleteWeights() {
+    public ArrayList<Object[]> getIncompleteWeights() {
         return incompleteWeights;
     }
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class UserData {
 
     private ArrayList<Exercise> exercises;
+    private Exercise cardViewExercisePressed;
     //private int workoutNum; //1-18 Number of Days worked out in that session so far
 
     public UserData(){
@@ -37,7 +38,19 @@ public class UserData {
         this.exercises.add(0, exercise);
     }
 
-    public Exercise getWorkout(int index) {
+    public Exercise getExercise(int index) {
         return exercises.get(index);
+    }
+
+    public Exercise getCardViewExercisePressed() {
+        return cardViewExercisePressed;
+    }
+
+    public void setCardViewExercisePressed(Exercise cardViewExercisePressed) {
+        this.cardViewExercisePressed = cardViewExercisePressed;
+    }
+
+    public void setExercises(ArrayList<Exercise> exercises) {
+        this.exercises = exercises;
     }
 }

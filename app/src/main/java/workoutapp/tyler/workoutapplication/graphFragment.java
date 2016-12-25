@@ -3,26 +3,27 @@ package workoutapp.tyler.workoutapplication;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.TextViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CardTabView.OnFragmentInteractionListener} interface
+ * {@link graphFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link CardTabView#newInstance} factory method to
+ * Use the {@link graphFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CardTabView extends Fragment {
+public class graphFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -34,7 +35,7 @@ public class CardTabView extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public CardTabView() {
+    public graphFragment() {
         // Required empty public constructor
     }
 
@@ -44,11 +45,11 @@ public class CardTabView extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment CardTabView.
+     * @return A new instance of fragment graphFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CardTabView newInstance(String param1, String param2) {
-        CardTabView fragment = new CardTabView();
+    public static graphFragment newInstance(String param1, String param2) {
+        graphFragment fragment = new graphFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -65,26 +66,35 @@ public class CardTabView extends Fragment {
         }
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
-        adapter.addFragment(new addWeightFragment(), "Add Weight");
-        adapter.addFragment(new graphFragment(), "Graphs");
-        viewPager.setAdapter(adapter);
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_tab_view, container, false);
-        ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_graph, container, false);
+        GraphView graph = (GraphView)view.findViewById(R.id.graph);
+        MainActivity activity = (MainActivity)getActivity();
+        Exercise exercisePressed = activity.getUserData().getCardViewExercisePressed();
+        DataPoint[] dataPoints = new DataPoint[exercisePressed.getCompletedWeights().size()];
+        for (int i = 0; i < dataPoints.length; i++) {
+            dataPoints[i] = new DataPoint((Date)(exercisePressed.getCompletedWeights().get(i)[1]), (int)(exercisePressed.getCompletedWeights().get(i)[0]));
+        }
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPoints);
+        series.setDrawDataPoints(true);
+        series.setDataPointsRadius(10);
+        series.setThickness(8);
 
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        graph.addSeries(series);
 
-        // Inflate the layout for this fragment
+        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
+        graph.getGridLabelRenderer().setNumHorizontalLabels(dataPoints.length);
+
+        graph.getViewport().setMinX(((Date)(exercisePressed.getCompletedWeights().get(0)[1])).getTime());
+        graph.getViewport().setMaxX(((Date)(exercisePressed.getCompletedWeights().get(exercisePressed.getCompletedWeights().size()-1)[1])).getTime());
+        graph.getViewport().setXAxisBoundsManual(true);
+
+        graph.getGridLabelRenderer().setHumanRounding(false);
+
         return view;
     }
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

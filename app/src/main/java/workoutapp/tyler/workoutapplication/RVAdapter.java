@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -43,7 +44,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ExerciseViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ExerciseViewHolder exerciseViewHolder, int i) {
+    public void onBindViewHolder(final ExerciseViewHolder exerciseViewHolder, int i) {
         exerciseViewHolder.exerciseName.setText(exercises.get(i).getExerciseName());
         if (exercises.get(i).getNumberOfSets() < 0 || exercises.get(i).getNumberOfReps() < 0) {
             exerciseViewHolder.cv.setOnClickListener(new View.OnClickListener() {
@@ -57,23 +58,37 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ExerciseViewHolder
                     fragmentTransaction.commit();
                 }
             });
+            exerciseViewHolder.xButton.setVisibility(View.INVISIBLE);
         } else {
             final int cardNum = i;
             exerciseViewHolder.sets.setText(Integer.toString(exercises.get(i).getNumberOfSets()) + " Sets");
             exerciseViewHolder.reps.setText(Integer.toString(exercises.get(i).getNumberOfReps()) + " Reps");
-            exerciseViewHolder.weight.setText(Integer.toString(exercises.get(i).getCompletedWeights().get(exercises.get(i).getCompletedWeights().size()-1)[0]) + " lbs");
+            exerciseViewHolder.weight.setText(Integer.toString((int)exercises.get(i).getCompletedWeights().get(exercises.get(i).getCompletedWeights().size()-1)[0]) + " lbs");
             exerciseViewHolder.cv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     CardTabView cardTabView = new CardTabView();
                     MainActivity activity = (MainActivity) view.getContext();
-                    activity.setExercisePressed(exercises.get(cardNum));
+                    activity.getUserData().setCardViewExercisePressed(exercises.get(cardNum));
 
                     FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_top);
                     fragmentTransaction.replace(R.id.fragmentContainer, cardTabView);
                     fragmentTransaction.commit();
                 }
+            });
+            exerciseViewHolder.xButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    exercises.remove(cardNum);
+                    MainActivity activity = (MainActivity) view.getContext();
+                    calculationFragment calcFrag = activity.getCalculationFragment();
+                    FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.detach(calcFrag);
+                    fragmentTransaction.attach(calcFrag);
+                    fragmentTransaction.commit();
+                }
+
             });
         }
     }
@@ -85,6 +100,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ExerciseViewHolder
         public TextView sets;
         public TextView reps;
         public TextView weight;
+        public Button xButton;
 
         ExerciseViewHolder(View cardView) {
             super(cardView);
@@ -93,6 +109,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ExerciseViewHolder
             sets = (TextView) cardView.findViewById(R.id.sets);
             reps = (TextView) cardView.findViewById(R.id.reps);
             weight = (TextView) cardView.findViewById(R.id.previousWeight);
+            xButton = (Button) cardView.findViewById(R.id.removeExerciseButton);
         }
 
     }
