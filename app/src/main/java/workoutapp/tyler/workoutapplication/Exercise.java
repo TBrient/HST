@@ -5,6 +5,9 @@ import java.sql.SQLOutput;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
@@ -41,14 +44,40 @@ public class Exercise implements Serializable{
         this.numberOfReps = numberOfReps;
     }
 
-    public void addSet(int weight, int sets, int reps){ //TODO: Add a date insert option
-        Calendar c = Calendar.getInstance();
-        Date date = c.getTime();
-
+    public void addSet(int weight, int sets, int reps, Calendar cal){ //TODO: Add a date insert option
+        Date date = cal.getTime();
         if (sets < numberOfSets || reps < numberOfReps) {
             incompleteWeights.add(new Object[]{weight, sets, reps, date});
+            Collections.sort(incompleteWeights, new Comparator<Object[]>() {
+                @Override
+                public int compare(Object[] objects, Object[] t1) {
+                    Date d1 = (Date)objects[1];
+                    Date d2 = (Date)t1[1];
+                    if (d1.getTime() < d2.getTime()) {
+                        return -1;
+                    } else if (d1.getTime() == d2.getTime()) {
+                        return 0;
+                    } else {
+                        return 1;
+                    }
+                }
+            });
         } else {
             completedWeights.add(new Object[]{weight, date});
+            Collections.sort(completedWeights, new Comparator<Object[]>() {
+                @Override
+                public int compare(Object[] objects, Object[] t1) {
+                    Date d1 = (Date)objects[1];
+                    Date d2 = (Date)t1[1];
+                    if (d1.getTime() < d2.getTime()) {
+                        return -1;
+                    } else if (d1.getTime() == d2.getTime()) {
+                        return 0;
+                    } else {
+                        return 1;
+                    }
+                }
+            });
         }
     }
 

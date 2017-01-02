@@ -1,36 +1,37 @@
 package workoutapp.tyler.workoutapplication;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link newExerciseFragment.OnFragmentInteractionListener} interface
+ * {@link addBodyWeightFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link newExerciseFragment#newInstance} factory method to
+ * Use the {@link addBodyWeightFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class newExerciseFragment extends Fragment {
+public class addBodyWeightFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -42,7 +43,7 @@ public class newExerciseFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public newExerciseFragment() {
+    public addBodyWeightFragment() {
         // Required empty public constructor
     }
 
@@ -52,11 +53,11 @@ public class newExerciseFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment newExerciseFragment.
+     * @return A new instance of fragment addBodyWeightFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static newExerciseFragment newInstance(String param1, String param2) {
-        newExerciseFragment fragment = new newExerciseFragment();
+    public static addBodyWeightFragment newInstance(String param1, String param2) {
+        addBodyWeightFragment fragment = new addBodyWeightFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -71,6 +72,12 @@ public class newExerciseFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+
+
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 
     public void setupUI(View view) {
@@ -93,73 +100,91 @@ public class newExerciseFragment extends Fragment {
         }
     }
 
-    public static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_new_exercise, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_body_weight, container, false);
         setupUI(view);
+        final MainActivity activity = (MainActivity) getActivity();
 
-        MainActivity mainActivity = (MainActivity)getActivity();
-        ActionBar actionBar = mainActivity.getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
-        Button cancelButton = (Button)view.findViewById(R.id.cancelButton);
+        final TextView dateText = (TextView) view.findViewById(R.id.dateTextView);
+
+        final Calendar c = Calendar.getInstance();
+        Date date = c.getTime();
+
+        final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        dateText.setText(sdf.format(date));
+
+        final DatePickerDialog.OnDateSetListener dateClick = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                c.set(Calendar.YEAR, year);
+                c.set(Calendar.MONTH, monthOfYear);
+                c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                dateText.setText(sdf.format(c.getTime()));
+            }
+
+        };
+
+        dateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(activity, dateClick, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+
+        Button saveButton = (Button) view.findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                View parentView = view.getRootView();
+                EditText weightInput = (EditText) parentView.findViewById(R.id.WeightInput);
+
+                if (weightInput.getText().toString().equals("")) {
+                    Snackbar snackbar = Snackbar.make((View) view.getParent(), "Please fill out body weight before saving", Snackbar.LENGTH_LONG);
+                    View snackBarView = snackbar.getView();
+                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPopup));
+                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(getResources().getColor(R.color.colorAccent));
+                    snackbar.show();
+                } else {
+
+                    MainActivity mainActivity = (MainActivity) getActivity();
+                    activity.getUserData().addBodyWeight(Integer.parseInt(weightInput.getText().toString()), c);
+                    FragmentTransaction fragmentTransaction = mainActivity.getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.setCustomAnimations(R.anim.enter_from_top, R.anim.exit_to_bottom);
+                    fragmentTransaction.replace(R.id.fragmentContainer, mainActivity.getBodyWeightGraphFragment(), "toBWGraph");
+                    fragmentTransaction.addToBackStack("toBWGraph");
+                    fragmentTransaction.commit();
+                    InputMethodManager imm = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+        });
+
+
+        Button cancelButton = (Button) view.findViewById(R.id.cancelButton);
+
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity mainActivity = (MainActivity)getActivity();
+                MainActivity mainActivity = (MainActivity) getActivity();
                 FragmentTransaction fragmentTransaction = mainActivity.getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.enter_from_top, R.anim.exit_to_bottom);
-                fragmentTransaction.replace(R.id.fragmentContainer, mainActivity.getExerciseCardsFragment());
+                fragmentTransaction.replace(R.id.fragmentContainer, mainActivity.getBodyWeightGraphFragment(), "toBWGraph");
+                fragmentTransaction.addToBackStack("toBWGraph");
                 fragmentTransaction.commit();
             }
         });
 
-        Button saveButton = (Button)view.findViewById(R.id.saveButton);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                View outerView = (View)view.getParent();
-                MainActivity mainActivity = (MainActivity)getActivity();
-                ArrayList<Exercise> exercises = mainActivity.getUserData().getExercises();
-                EditText setInput = (EditText)outerView.findViewById(R.id.setsInput);
-                EditText repInput = (EditText)outerView.findViewById(R.id.repsInput);
-                EditText weightInput = (EditText)outerView.findViewById(R.id.initialWeightInput);
-                AutoCompleteTextView nameInput = (AutoCompleteTextView)outerView.findViewById(R.id.nameAutoComplete);
-
-                if (setInput.getText().toString().equals("") || repInput.getText().toString().equals("") || weightInput.getText().toString().equals("") || weightInput.getText().toString().equals("")) {
-                    Snackbar snackbar = Snackbar.make(outerView, "Please fill out all of the text fields", Snackbar.LENGTH_LONG);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPopup));
-                    TextView textView = (TextView)snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setTextColor(getResources().getColor(R.color.colorAccent));
-                    snackbar.show();
-                } else {
-                    int startingSets = Integer.valueOf(setInput.getText().toString());
-                    int startingReps = Integer.valueOf(repInput.getText().toString());
-                    int startingWeight = Integer.valueOf(weightInput.getText().toString());
-                    String exerciseName =nameInput.getText().toString();
-                    Exercise tempExercise = new Exercise(exerciseName, startingSets, startingReps);
-                    tempExercise.addSet(startingWeight, startingSets, startingReps, Calendar.getInstance());
-                    exercises.add(0, tempExercise);
-                    FragmentTransaction fragmentTransaction = mainActivity.getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.setCustomAnimations(R.anim.enter_from_top, R.anim.exit_to_bottom);
-                    fragmentTransaction.replace(R.id.fragmentContainer, mainActivity.getExerciseCardsFragment());
-                    fragmentTransaction.commit();
-                    InputMethodManager imm = (InputMethodManager)mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-             }
-            }
-        });
         // Inflate the layout for this fragment
         return view;
     }
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

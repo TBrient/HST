@@ -15,9 +15,10 @@
             android:id="@+id/spinner" />
 
         <com.jjoe64.graphview.GraphView
-            android:layout_width="match_parent"
             android:id="@+id/graph"
-            android:layout_height="400dp" />
+            android:layout_height="400dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent" />
 
     </LinearLayout>
 

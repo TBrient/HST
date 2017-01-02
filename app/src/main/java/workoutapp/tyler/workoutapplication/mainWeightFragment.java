@@ -13,12 +13,12 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CardTabView.OnFragmentInteractionListener} interface
+ * {@link mainWeightFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link CardTabView#newInstance} factory method to
+ * Use the {@link mainWeightFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CardTabView extends Fragment {
+public class mainWeightFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,7 +30,7 @@ public class CardTabView extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public CardTabView() {
+    public mainWeightFragment() {
         // Required empty public constructor
     }
 
@@ -40,11 +40,11 @@ public class CardTabView extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment CardTabView.
+     * @return A new instance of fragment mainWeightFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CardTabView newInstance(String param1, String param2) {
-        CardTabView fragment = new CardTabView();
+    public static mainWeightFragment newInstance(String param1, String param2) {
+        mainWeightFragment fragment = new mainWeightFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -63,14 +63,15 @@ public class CardTabView extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
-        adapter.addFragment(new addWeightFragment(), "Add Weight");
-        adapter.addFragment(new graphFragment(), "Graphs");
+        adapter.addFragment(new addBodyWeightFragment(), "Add Body Weight");
+        adapter.addFragment(new BodyWeightGraphFragment(), "Graph");
         viewPager.setAdapter(adapter);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_tab_view, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_main_weight, container, false);
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
@@ -80,7 +81,6 @@ public class CardTabView extends Fragment {
         // Inflate the layout for this fragment
         return view;
     }
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

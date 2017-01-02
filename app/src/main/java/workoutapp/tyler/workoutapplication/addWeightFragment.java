@@ -1,9 +1,12 @@
 package workoutapp.tyler.workoutapplication;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.widget.DatePicker;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -14,6 +17,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -98,7 +105,7 @@ public class addWeightFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_weight, container, false);
         setupUI(view);
         TextView exerciseName = (TextView)view.findViewById(R.id.ExerciseName);
-        MainActivity activity = (MainActivity)getActivity();
+        final MainActivity activity = (MainActivity)getActivity();
 
         final Exercise exercise = activity.getUserData().getCardViewExercisePressed();
         exerciseName.setText(exercise.getExerciseName());
@@ -109,6 +116,37 @@ public class addWeightFragment extends Fragment {
         setsDefault.setText(String.valueOf(exercise.getNumberOfSets()));
         repsDefault.setText(String.valueOf(exercise.getNumberOfReps()));
 
+        final TextView dateText = (TextView)view.findViewById(R.id.dateTextView);
+
+        final Calendar c = Calendar.getInstance();
+        Date date = c.getTime();
+
+        final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        dateText.setText(sdf.format(date));
+
+        final DatePickerDialog.OnDateSetListener dateClick = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                c.set(Calendar.YEAR, year);
+                c.set(Calendar.MONTH, monthOfYear);
+                c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                dateText.setText(sdf.format(c.getTime()));
+            }
+
+        };
+
+        dateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(activity, dateClick, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+
+
         Button saveButton = (Button)view.findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,25 +156,49 @@ public class addWeightFragment extends Fragment {
                 EditText repsDefault = (EditText)parentView.findViewById(R.id.repsCheck);
                 EditText weightInput = (EditText)parentView.findViewById(R.id.WeightInput);
 
-                exercise.addSet(Integer.parseInt(weightInput.getText().toString()), Integer.parseInt(setsDefault.getText().toString()), Integer.parseInt(repsDefault.getText().toString()));
+                if (setsDefault.getText().toString().equals("") || repsDefault.getText().toString().equals("") || weightInput.getText().toString().equals("")) {
+                    Snackbar snackbar = Snackbar.make((View)view.getParent(), "Please fill out all of the text fields", Snackbar.LENGTH_LONG);
+                    View snackBarView = snackbar.getView();
+                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPopup));
+                    TextView textView = (TextView)snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(getResources().getColor(R.color.colorAccent));
+                    snackbar.show();
+                } else {
+                    exercise.addSet(Integer.parseInt(weightInput.getText().toString()), Integer.parseInt(setsDefault.getText().toString()), Integer.parseInt(repsDefault.getText().toString()), c);
 
-                MainActivity mainActivity = (MainActivity)getActivity();
+                    MainActivity mainActivity = (MainActivity)getActivity();
 
-                FragmentTransaction fragmentTransaction = mainActivity.getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.setCustomAnimations(R.anim.enter_from_top, R.anim.exit_to_bottom);
-                fragmentTransaction.replace(R.id.fragmentContainer, mainActivity.getCalculationFragment());
-                fragmentTransaction.commit();
-                InputMethodManager imm = (InputMethodManager)mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    FragmentTransaction fragmentTransaction = mainActivity.getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.setCustomAnimations(R.anim.enter_from_top, R.anim.exit_to_bottom);
+                    fragmentTransaction.replace(R.id.fragmentContainer, mainActivity.getExerciseCardsFragment(), "toCalc");
+                    fragmentTransaction.addToBackStack("toCalc");
+                    fragmentTransaction.commit();
+                    InputMethodManager imm = (InputMethodManager)mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
             }
         });
 
 
         Button cancelButton = (Button)view.findViewById(R.id.cancelButton);
 
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity mainActivity = (MainActivity)getActivity();
+                FragmentTransaction fragmentTransaction = mainActivity.getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.enter_from_top, R.anim.exit_to_bottom);
+                fragmentTransaction.replace(R.id.fragmentContainer, mainActivity.getExerciseCardsFragment(), "toCalc");
+                fragmentTransaction.addToBackStack("toCalc");
+                fragmentTransaction.commit();
+            }
+        });
+
         // Inflate the layout for this fragment
         return view;
     }
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

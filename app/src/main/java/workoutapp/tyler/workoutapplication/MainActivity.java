@@ -3,9 +3,6 @@ package workoutapp.tyler.workoutapplication;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,27 +11,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
-import org.w3c.dom.Text;
-
-public class MainActivity extends AppCompatActivity implements graphFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener, addWeightFragment.OnFragmentInteractionListener,CardTabView.OnFragmentInteractionListener, calculationFragment.OnFragmentInteractionListener, newExerciseFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements CompareGraphsFragment.OnFragmentInteractionListener, mainWeightFragment.OnFragmentInteractionListener, BodyWeightGraphFragment.OnFragmentInteractionListener, addBodyWeightFragment.OnFragmentInteractionListener, graphFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener, addWeightFragment.OnFragmentInteractionListener,CardTabView.OnFragmentInteractionListener, workoutapp.tyler.workoutapplication.exerciseCardsFragment.OnFragmentInteractionListener, newExerciseFragment.OnFragmentInteractionListener {
 
     NavigationView navigationView = null;
     Toolbar toolbar = null;
-    private calculationFragment calculationFragment;
+    private exerciseCardsFragment exerciseCardsFragment;
+    private BodyWeightGraphFragment bodyWeightGraphFragment;
     private mainFragment mainFragment;
+    private CompareGraphsFragment compareGraphsFragment;
     private UserData userData;
 
     @Override
@@ -48,21 +39,14 @@ public class MainActivity extends AppCompatActivity implements graphFragment.OnF
         setSupportActionBar(toolbar);
 
         mainFragment = new mainFragment();
-        calculationFragment = new calculationFragment();
+        exerciseCardsFragment = new exerciseCardsFragment();
+        bodyWeightGraphFragment = new BodyWeightGraphFragment();
+        compareGraphsFragment = new CompareGraphsFragment();
 
         //Set fragment
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainer, mainFragment);
         fragmentTransaction.commit();
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -86,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements graphFragment.OnF
         }
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -105,6 +90,15 @@ public class MainActivity extends AppCompatActivity implements graphFragment.OnF
             return true;
         }
 
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, getExerciseCardsFragment())
+                        .commit();
+                return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -116,16 +110,24 @@ public class MainActivity extends AppCompatActivity implements graphFragment.OnF
 
         if (id == R.id.nav_camera) {
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragmentContainer, mainFragment);
+            fragmentTransaction.replace(R.id.fragmentContainer, mainFragment, "toMain");
+            fragmentTransaction.addToBackStack("toMain");
             fragmentTransaction.commit();
         } else if (id == R.id.nav_gallery) {
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragmentContainer, calculationFragment);
+            fragmentTransaction.replace(R.id.fragmentContainer, exerciseCardsFragment, "toCalc");
+            fragmentTransaction.addToBackStack("toCalc");
             fragmentTransaction.commit();
         } else if (id == R.id.nav_slideshow) {
-
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragmentContainer, bodyWeightGraphFragment, "toBodyWeight");
+            fragmentTransaction.addToBackStack("toBodyWeight");
+            fragmentTransaction.commit();
         } else if (id == R.id.nav_manage) {
-
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragmentContainer, compareGraphsFragment, "toCompare");
+            fragmentTransaction.addToBackStack("toCompare");
+            fragmentTransaction.commit();
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -141,8 +143,8 @@ public class MainActivity extends AppCompatActivity implements graphFragment.OnF
 
     }
 
-    public workoutapp.tyler.workoutapplication.calculationFragment getCalculationFragment() {
-        return calculationFragment;
+    public exerciseCardsFragment getExerciseCardsFragment() {
+        return exerciseCardsFragment;
     }
 
     public workoutapp.tyler.workoutapplication.mainFragment getMainFragment() {
@@ -156,11 +158,11 @@ public class MainActivity extends AppCompatActivity implements graphFragment.OnF
     private void saveData(){
         String fileName = "UserData";
         FileOutputStream outputStream;
-        ArrayList<Exercise> exercises = userData.getExercises();
+        ArrayList[] saveData = userData.getData();
         try {
             outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-            objectOutputStream.writeObject(exercises);
+            objectOutputStream.writeObject(saveData);
             objectOutputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -170,17 +172,22 @@ public class MainActivity extends AppCompatActivity implements graphFragment.OnF
     private void getData(){
         String fileName = "UserData";
         FileInputStream inputStream;
-        ArrayList<Exercise> returnList = null;
+        ArrayList[] returnList = null;
         try {
             inputStream = openFileInput(fileName);
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-            returnList = (ArrayList<Exercise>)(objectInputStream.readObject());
+            returnList = (ArrayList[])(objectInputStream.readObject());
             objectInputStream.close();
         } catch(Exception e) {
             e.printStackTrace();
         }
         if (returnList != null) {
-            userData.setExercises(returnList);
+            if (returnList[0] != null) {
+                userData.setExercises(returnList[0]);
+            }
+            if (returnList[1] != null) {
+                userData.setBodyWeight(returnList[1]);
+            }
         }
     }
 
@@ -196,4 +203,11 @@ public class MainActivity extends AppCompatActivity implements graphFragment.OnF
         getData();
     }
 
+    public BodyWeightGraphFragment getBodyWeightGraphFragment() {
+        return bodyWeightGraphFragment;
+    }
+
+    public CompareGraphsFragment getCompareGraphsFragment() {
+        return compareGraphsFragment;
+    }
 }

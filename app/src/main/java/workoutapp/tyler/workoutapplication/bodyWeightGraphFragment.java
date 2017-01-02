@@ -3,11 +3,14 @@ package workoutapp.tyler.workoutapplication;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
@@ -15,17 +18,18 @@ import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link graphFragment.OnFragmentInteractionListener} interface
+ * {@link BodyWeightGraphFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link graphFragment#newInstance} factory method to
+ * Use the {@link BodyWeightGraphFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class graphFragment extends Fragment {
+public class BodyWeightGraphFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -37,7 +41,7 @@ public class graphFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public graphFragment() {
+    public BodyWeightGraphFragment() {
         // Required empty public constructor
     }
 
@@ -47,11 +51,11 @@ public class graphFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment graphFragment.
+     * @return A new instance of fragment BodyWeightGraphFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static graphFragment newInstance(String param1, String param2) {
-        graphFragment fragment = new graphFragment();
+    public static BodyWeightGraphFragment newInstance(String param1, String param2) {
+        BodyWeightGraphFragment fragment = new BodyWeightGraphFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -71,13 +75,14 @@ public class graphFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_graph, container, false);
+        View view = inflater.inflate(R.layout.fragment_body_weight_graph, container, false);
+
         GraphView graph = (GraphView)view.findViewById(R.id.graph);
         MainActivity activity = (MainActivity)getActivity();
-        Exercise exercisePressed = activity.getUserData().getCardViewExercisePressed();
-        DataPoint[] dataPoints = new DataPoint[exercisePressed.getCompletedWeights().size()];
+        ArrayList<Object[]> bodyWeight = activity.getUserData().getBodyWeight();
+        DataPoint[] dataPoints = new DataPoint[bodyWeight.size()];
         for (int i = 0; i < dataPoints.length; i++) {
-            dataPoints[i] = new DataPoint((Date)(exercisePressed.getCompletedWeights().get(i)[1]), (int)(exercisePressed.getCompletedWeights().get(i)[0]));
+            dataPoints[i] = new DataPoint((Date)(bodyWeight.get(i)[1]), (int)(bodyWeight.get(i)[0]));
         }
         int whiteColor = ContextCompat.getColor(activity, R.color.whiteText);
         int accentColor = ContextCompat.getColor(activity, R.color.colorAccent);
@@ -95,7 +100,7 @@ public class graphFragment extends Fragment {
         glr.setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
         glr.setHorizontalLabelsColor(whiteColor);
         glr.setVerticalLabelsColor(whiteColor);
-        glr.setVerticalAxisTitle("Weight (lbs)");
+        glr.setVerticalAxisTitle("Body Weight (lbs)");
         glr.setHorizontalAxisTitle("Date");
         glr.setVerticalLabelsColor(whiteColor);
         glr.setHorizontalAxisTitleColor(whiteColor);
@@ -107,13 +112,34 @@ public class graphFragment extends Fragment {
         }
         graph.getViewport().setBorderColor(ContextCompat.getColor(activity, R.color.colorPopup));
 
-        graph.getViewport().setMinX(((Date)(exercisePressed.getCompletedWeights().get(0)[1])).getTime());
-        graph.getViewport().setMaxX(((Date)(exercisePressed.getCompletedWeights().get(exercisePressed.getCompletedWeights().size()-1)[1])).getTime());
-        graph.getViewport().setXAxisBoundsManual(true);
+        if (bodyWeight.size()  > 0) {
+            graph.getViewport().setMinX(((Date) (bodyWeight.get(0)[1])).getTime());
+            graph.getViewport().setMaxX(((Date) (bodyWeight.get(bodyWeight.size() - 1)[1])).getTime());
+            graph.getViewport().setXAxisBoundsManual(true);
+        }
 
         glr.setHumanRounding(false);
         glr.setGridColor(whiteColor);
-        graph.getViewport().setMaxXAxisSize(300);
+
+        TextView lastWeight = (TextView)view.findViewById(R.id.lastWeight);
+        FloatingActionButton fab = (FloatingActionButton)view.findViewById(R.id.fab);
+
+        if (bodyWeight.size() > 0) {
+            lastWeight.setText("Last Weight: " + Integer.toString((int)(bodyWeight.get(bodyWeight.size()-1)[0])));
+        } else {
+            lastWeight.setText("No data");
+        }
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.enter_from_top, R.anim.exit_to_bottom);
+                fragmentTransaction.replace(R.id.fragmentContainer, new addBodyWeightFragment(), "toAddBW");
+                fragmentTransaction.addToBackStack("toAddBW");
+                fragmentTransaction.commit();
+            }
+        });
 
         return view;
     }

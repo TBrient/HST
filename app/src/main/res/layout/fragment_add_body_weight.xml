@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".addWeightFragment"
+    tools:context=".addBodyWeightFragment"
     android:background="@color/windowBackground">
 
     <!-- TODO: Update blank fragment layout -->
@@ -12,10 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal">
+        android:gravity="center_vertical|center_horizontal|center">
 
         <TextView
-            android:text="TextView"
+            android:text="Body Weight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/ExerciseName"
@@ -24,73 +24,6 @@
             android:textSize="18sp"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="20dp" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/linearLayout5"
-            android:layout_alignRight="@+id/saveButton"
-            android:layout_alignEnd="@+id/saveButton"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp">
-
-            <TextView
-                android:text="Sets: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/setsText"
-                android:layout_weight="1"
-                android:textSize="18sp"
-                android:textColor="@color/whiteText" />
-
-            <EditText
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:ems="10"
-                android:layout_below="@+id/editText3"
-                android:layout_alignRight="@+id/editText3"
-                android:layout_alignEnd="@+id/editText3"
-                android:id="@+id/setsCheck"
-                android:layout_weight="1"
-                android:textColor="@color/whiteText"
-                android:gravity="right|center_vertical" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp">
-
-            <TextView
-                android:text="Reps: "
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/repsText"
-                android:layout_weight="1"
-                android:textSize="18sp"
-                android:textColor="@color/whiteText" />
-
-            <EditText
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:ems="10"
-                android:layout_below="@+id/editText3"
-                android:layout_alignRight="@+id/editText3"
-                android:layout_alignEnd="@+id/editText3"
-                android:id="@+id/repsCheck"
-                android:layout_weight="1"
-                android:textColor="@color/whiteText"
-                android:gravity="right|center_vertical" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
