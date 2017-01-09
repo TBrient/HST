@@ -92,11 +92,12 @@ public class graphFragment extends Fragment {
 
         GridLabelRenderer glr = graph.getGridLabelRenderer();
 
+        glr.setPadding(100);
+
         glr.setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
         glr.setHorizontalLabelsColor(whiteColor);
         glr.setVerticalLabelsColor(whiteColor);
         glr.setVerticalAxisTitle("Weight (lbs)");
-        glr.setHorizontalAxisTitle("Date");
         glr.setVerticalLabelsColor(whiteColor);
         glr.setHorizontalAxisTitleColor(whiteColor);
         glr.setVerticalAxisTitleColor(whiteColor);
@@ -134,6 +135,8 @@ public class graphFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+        getActivity().setTitle("");
+        getActivity().setTitle(R.string.view_graph_exercise_fragment_title);
     }
 
     @Override

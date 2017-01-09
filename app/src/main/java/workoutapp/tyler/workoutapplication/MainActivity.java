@@ -117,16 +117,22 @@ public class MainActivity extends AppCompatActivity implements CompareGraphsFrag
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragmentContainer, exerciseCardsFragment, "toCalc");
             fragmentTransaction.addToBackStack("toCalc");
+            setTitle("");
+            setTitle(R.string.main_exercise_cards_fragment_title);
             fragmentTransaction.commit();
         } else if (id == R.id.nav_slideshow) {
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragmentContainer, bodyWeightGraphFragment, "toBodyWeight");
-            fragmentTransaction.addToBackStack("toBodyWeight");
+            fragmentTransaction.replace(R.id.fragmentContainer, bodyWeightGraphFragment, "toBWGraph");
+            fragmentTransaction.addToBackStack("toBWGraph");
+            setTitle("");
+            setTitle(R.string.body_weight_graph_fragment_title);
             fragmentTransaction.commit();
         } else if (id == R.id.nav_manage) {
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragmentContainer, compareGraphsFragment, "toCompare");
             fragmentTransaction.addToBackStack("toCompare");
+            setTitle("");
+            setTitle(R.string.compare_graphs_fragment_title);
             fragmentTransaction.commit();
         } else if (id == R.id.nav_share) {
 

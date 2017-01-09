@@ -6,41 +6,62 @@
     tools:context=".CompareGraphsFragment">
 
     <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:id="@+id/spinLinearLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp">
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/firstCompareSpinner"
+            android:layout_weight="1"
+            android:backgroundTint="@color/whiteText"
+            android:popupTheme="@android:style/ThemeOverlay.Material.Dark"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/secondCompareSpinner"
+            android:layout_weight="1"
+            android:backgroundTint="@color/whiteText"
+            android:popupTheme="@android:style/ThemeOverlay.Material.Dark"/>
+
+    </LinearLayout>
+
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:id="@+id/graph"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_height="400dp"
+        android:layout_below="@+id/spinLinearLayout"
+        android:layout_marginTop="40dp" />
+
+    <TextView
+        android:text="No Data in Selected Sets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/noDataText"
+        android:layout_below="@+id/spinLinearLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="190dp"
+        android:textSize="24sp"
+        android:textColor="@color/whiteText" />
+
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/firstCompareSpinner"
-                android:layout_weight="1"
-                android:backgroundTint="@color/whiteText" />
-
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/secondCompareSpinner"
-                android:layout_weight="1"
-                android:backgroundTint="@color/whiteText" />
-
-        </LinearLayout>
-
-        <com.jjoe64.graphview.GraphView
-            android:layout_width="360dp"
-            android:id="@+id/graph"
-            android:layout_height="400dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_weight="1" />
+        android:gravity="center_horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
     </LinearLayout>
 

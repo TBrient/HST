@@ -176,6 +176,9 @@ public class addWeightFragment extends Fragment {
                     InputMethodManager imm = (InputMethodManager)mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
+                getActivity().setTitle("");
+                getActivity().setTitle(R.string.main_exercise_cards_fragment_title);
+
             }
         });
 
@@ -191,6 +194,8 @@ public class addWeightFragment extends Fragment {
                 fragmentTransaction.replace(R.id.fragmentContainer, mainActivity.getExerciseCardsFragment(), "toCalc");
                 fragmentTransaction.addToBackStack("toCalc");
                 fragmentTransaction.commit();
+                mainActivity.setTitle("");
+                mainActivity.setTitle(R.string.main_exercise_cards_fragment_title);
             }
         });
 
@@ -216,6 +221,8 @@ public class addWeightFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+        getActivity().setTitle("");
+        getActivity().setTitle(R.string.add_exercise_weight_fragment_title);
     }
 
     @Override

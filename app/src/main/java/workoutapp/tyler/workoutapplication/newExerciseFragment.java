@@ -176,6 +176,8 @@ public class newExerciseFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+        getActivity().setTitle("");
+        getActivity().setTitle(R.string.create_new_exercise_fragment_title);
     }
 
     @Override

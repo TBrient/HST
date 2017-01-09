@@ -201,6 +201,8 @@ public class addBodyWeightFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+        getActivity().setTitle("");
+        getActivity().setTitle(R.string.add_body_weight_fragment_title);
     }
 
     @Override

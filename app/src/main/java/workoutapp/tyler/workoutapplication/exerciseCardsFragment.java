@@ -120,6 +120,8 @@ public class exerciseCardsFragment extends Fragment  {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+        getActivity().setTitle("");
+        getActivity().setTitle(R.string.main_exercise_cards_fragment_title);
     }
 
     @Override

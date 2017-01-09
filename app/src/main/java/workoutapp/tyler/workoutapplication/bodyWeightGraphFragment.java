@@ -95,13 +95,17 @@ public class BodyWeightGraphFragment extends Fragment {
 
         graph.addSeries(series);
 
+
+        graph.getViewport().setMaxXAxisSize(400.0);
+
         GridLabelRenderer glr = graph.getGridLabelRenderer();
 
+        glr.setPadding(100);
+        //TODO: Implement spinners in graph views
         glr.setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
         glr.setHorizontalLabelsColor(whiteColor);
         glr.setVerticalLabelsColor(whiteColor);
         glr.setVerticalAxisTitle("Body Weight (lbs)");
-        glr.setHorizontalAxisTitle("Date");
         glr.setVerticalLabelsColor(whiteColor);
         glr.setHorizontalAxisTitleColor(whiteColor);
         glr.setVerticalAxisTitleColor(whiteColor);
@@ -111,6 +115,7 @@ public class BodyWeightGraphFragment extends Fragment {
             glr.setNumHorizontalLabels(dataPoints.length);
         }
         graph.getViewport().setBorderColor(ContextCompat.getColor(activity, R.color.colorPopup));
+        //series.setOnDataPointTapListener(); datapoint click
 
         if (bodyWeight.size()  > 0) {
             graph.getViewport().setMinX(((Date) (bodyWeight.get(0)[1])).getTime());
@@ -134,7 +139,7 @@ public class BodyWeightGraphFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.setCustomAnimations(R.anim.enter_from_top, R.anim.exit_to_bottom);
+                fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_top);
                 fragmentTransaction.replace(R.id.fragmentContainer, new addBodyWeightFragment(), "toAddBW");
                 fragmentTransaction.addToBackStack("toAddBW");
                 fragmentTransaction.commit();
@@ -160,6 +165,8 @@ public class BodyWeightGraphFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+        getActivity().setTitle("");
+        getActivity().setTitle(R.string.body_weight_graph_fragment_title);
     }
 
     @Override

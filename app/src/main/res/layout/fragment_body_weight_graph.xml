@@ -7,7 +7,6 @@
     tools:context=".BodyWeightGraphFragment"
     android:background="@color/windowBackground">
 
-    <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -18,44 +17,40 @@
             android:id="@+id/spinner" />
 
         <com.jjoe64.graphview.GraphView
-            android:layout_width="match_parent"
+            android:layout_width="400dp"
             android:id="@+id/graph"
             android:layout_height="400dp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/spinner"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="50dp" />
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <TextView
+            android:text="Last Weight: XXX"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical">
+            android:layout_height="wrap_content"
+            android:id="@+id/lastWeight"
+            android:textSize="24sp"
+            android:textColor="@color/whiteText"
+            android:layout_weight="1"
+            android:paddingStart="20dp"
+            android:paddingLeft="20dp"
+            android:layout_below="@+id/graph"
+            android:layout_marginTop="50dp" />
 
-            <TextView
-                android:text="Last Weight: XXX"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/lastWeight"
-                android:textSize="24sp"
-                android:textColor="@color/whiteText"
-                android:layout_weight="1"
-                android:paddingStart="20dp"
-                android:paddingLeft="20dp" />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:srcCompat="@android:drawable/ic_input_add"
+            android:tint="@color/whiteText"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            app:elevation="4dp"
+            android:layout_margin="@dimen/fab_margin"
+            app:fabSize="normal"
+            android:id="@+id/fab" />
 
-            <android.support.design.widget.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                app:srcCompat="@android:drawable/ic_input_add"
-                android:id="@+id/fab"
-                android:tint="@color/whiteText"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                app:elevation="4dp"
-                android:layout_margin="@dimen/fab_margin"
-                app:fabSize="normal" />
-
-        </LinearLayout>
-
-    </LinearLayout>
 
 </RelativeLayout>
