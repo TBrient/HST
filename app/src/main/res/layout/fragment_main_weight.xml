@@ -17,7 +17,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/tabs">
+        android:id="@+id/tabs"
+        app:tabIndicatorColor="@color/colorAccent">
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"

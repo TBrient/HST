@@ -30,6 +30,7 @@
         android:layout_alignParentRight="true"
         app:elevation="4dp"
         android:layout_margin="@dimen/fab_margin"
-        app:fabSize="normal" />
+        app:fabSize="normal"
+        app:backgroundTint="@color/colorAccent" />
 
 </RelativeLayout>
