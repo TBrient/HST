@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity implements CompareGraphsFrag
     Toolbar toolbar = null;
     private exerciseCardsFragment exerciseCardsFragment;
     private BodyWeightGraphFragment bodyWeightGraphFragment;
-    private mainFragment mainFragment;
     private CompareGraphsFragment compareGraphsFragment;
     private UserData userData;
 
@@ -38,14 +37,13 @@ public class MainActivity extends AppCompatActivity implements CompareGraphsFrag
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mainFragment = new mainFragment();
         exerciseCardsFragment = new exerciseCardsFragment();
         bodyWeightGraphFragment = new BodyWeightGraphFragment();
         compareGraphsFragment = new CompareGraphsFragment();
 
         //Set fragment
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentContainer, mainFragment);
+        fragmentTransaction.replace(R.id.fragmentContainer, exerciseCardsFragment);
         fragmentTransaction.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -108,36 +106,27 @@ public class MainActivity extends AppCompatActivity implements CompareGraphsFrag
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragmentContainer, mainFragment, "toMain");
-            fragmentTransaction.addToBackStack("toMain");
-            fragmentTransaction.commit();
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_exercises) {
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragmentContainer, exerciseCardsFragment, "toCalc");
             fragmentTransaction.addToBackStack("toCalc");
             setTitle("");
             setTitle(R.string.main_exercise_cards_fragment_title);
             fragmentTransaction.commit();
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_BW) {
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragmentContainer, bodyWeightGraphFragment, "toBWGraph");
             fragmentTransaction.addToBackStack("toBWGraph");
             setTitle("");
             setTitle(R.string.body_weight_graph_fragment_title);
             fragmentTransaction.commit();
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_compare) {
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragmentContainer, compareGraphsFragment, "toCompare");
             fragmentTransaction.addToBackStack("toCompare");
             setTitle("");
             setTitle(R.string.compare_graphs_fragment_title);
             fragmentTransaction.commit();
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -151,10 +140,6 @@ public class MainActivity extends AppCompatActivity implements CompareGraphsFrag
 
     public exerciseCardsFragment getExerciseCardsFragment() {
         return exerciseCardsFragment;
-    }
-
-    public workoutapp.tyler.workoutapplication.mainFragment getMainFragment() {
-        return mainFragment;
     }
 
     public UserData getUserData() {

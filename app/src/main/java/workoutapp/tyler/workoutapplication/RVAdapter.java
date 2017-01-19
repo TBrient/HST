@@ -62,19 +62,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ExerciseViewHolder
                 fragmentTransaction.commit();
             }
         });
-        exerciseViewHolder.xButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                exercises.remove(cardNum);
-                MainActivity activity = (MainActivity) view.getContext();
-                exerciseCardsFragment calcFrag = activity.getExerciseCardsFragment();
-                FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.detach(calcFrag);
-                fragmentTransaction.attach(calcFrag);
-                fragmentTransaction.commit();
-            }
-
-        });
     }
 
 
@@ -84,7 +71,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ExerciseViewHolder
         public TextView sets;
         public TextView reps;
         public TextView weight;
-        public Button xButton;
 
         ExerciseViewHolder(View cardView) {
             super(cardView);
@@ -93,7 +79,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ExerciseViewHolder
             sets = (TextView) cardView.findViewById(R.id.sets);
             reps = (TextView) cardView.findViewById(R.id.reps);
             weight = (TextView) cardView.findViewById(R.id.previousWeight);
-            xButton = (Button) cardView.findViewById(R.id.removeExerciseButton);
         }
 
     }

@@ -84,26 +84,47 @@ public class exerciseCardsFragment extends Fragment  {
 
         SwipeableRecyclerViewTouchListener swipeTouchListener = new SwipeableRecyclerViewTouchListener(recyclerView, new SwipeableRecyclerViewTouchListener.SwipeListener() {
             @Override
-            public boolean canSwipe(int position) {
+            public boolean canSwipeLeft(int position) {
+                return true;
+            }
+
+            @Override
+            public boolean canSwipeRight(int position) {
                 return true;
             }
 
             @Override
             public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
                 for (int position : reverseSortedPositions) {
-                    mItems.remove(position);
-                    mAdapter.notifyItemRemoved(position);
+                    exercises.remove(position);
+                    adapter.notifyItemRemoved(position);
                 }
-                mAdapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
                 for (int position : reverseSortedPositions) {
-                    mItems.remove(position);
-                    mAdapter.notifyItemRemoved(position);
+                    exercises.remove(position);
+                    adapter.notifyItemRemoved(position);
                 }
-                mAdapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        recyclerView.addOnItemTouchListener(swipeTouchListener);
+
+        FloatingActionButton fab = (FloatingActionButton)view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                newExerciseFragment exerciseFragment = new newExerciseFragment();
+                MainActivity activity = (MainActivity) view.getContext();
+                FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_top);
+                fragmentTransaction.replace(R.id.fragmentContainer, exerciseFragment, "toExercise");
+                fragmentTransaction.addToBackStack("toExercise");
+                fragmentTransaction.commit();
             }
         });
 
