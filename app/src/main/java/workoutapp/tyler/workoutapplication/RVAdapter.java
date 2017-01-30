@@ -1,15 +1,21 @@
 package workoutapp.tyler.workoutapplication;
 
+import android.media.Image;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Tyler on 11/30/2016.
@@ -46,8 +52,17 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ExerciseViewHolder
         exerciseViewHolder.exerciseName.setText(exercises.get(i).getExerciseName());
         final int cardNum = i;
         exerciseViewHolder.sets.setText(Integer.toString(exercises.get(i).getNumberOfSets()) + " Sets");
-        exerciseViewHolder.reps.setText(Integer.toString(exercises.get(i).getNumberOfReps()) + " Reps");
+        String repString;
+        int[] repRange = exercises.get(i).getRepRange();
+        if (repRange[0] == repRange[1]) {
+            exerciseViewHolder.reps.setText(String.valueOf(repRange[0]) + "Reps");
+        } else {
+            exerciseViewHolder.reps.setText(repRange[0] + "-" + repRange[1] + "Reps");
+        }
         exerciseViewHolder.weight.setText(Integer.toString((int) exercises.get(i).getCompletedWeights().get(exercises.get(i).getCompletedWeights().size() - 1)[0]) + " lbs");
+        final Date date = (Date)(exercises.get(i).getCompletedWeights().get(exercises.get(i).getCompletedWeights().size()-1)[1]);
+        exerciseViewHolder.date.setText(new SimpleDateFormat("MM/dd").format(date));
+        checkDate(date, exerciseViewHolder);
         exerciseViewHolder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,8 +75,17 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ExerciseViewHolder
                 fragmentTransaction.replace(R.id.fragmentContainer, cardTabView, "toCardView");
                 fragmentTransaction.addToBackStack("toCardView");
                 fragmentTransaction.commit();
+                checkDate(date, exerciseViewHolder);
             }
         });
+    }
+
+    private void checkDate(Date date, ExerciseViewHolder exerciseViewHolder){
+        if (!DateUtils.isToday(date.getTime())) {
+            exerciseViewHolder.highlightBar.setVisibility(View.VISIBLE);
+        } else {
+            exerciseViewHolder.highlightBar.setVisibility(View.INVISIBLE);
+        }
     }
 
 
@@ -71,6 +95,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ExerciseViewHolder
         public TextView sets;
         public TextView reps;
         public TextView weight;
+        public TextView date;
+        public ImageView highlightBar;
 
         ExerciseViewHolder(View cardView) {
             super(cardView);
@@ -79,6 +105,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ExerciseViewHolder
             sets = (TextView) cardView.findViewById(R.id.sets);
             reps = (TextView) cardView.findViewById(R.id.reps);
             weight = (TextView) cardView.findViewById(R.id.previousWeight);
+            date = (TextView) cardView.findViewById(R.id.previousDate);
+            highlightBar = (ImageView) cardView.findViewById(R.id.highlightBar);
         }
 
     }

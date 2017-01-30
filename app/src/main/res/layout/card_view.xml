@@ -49,9 +49,21 @@
                 android:layout_below="@+id/exercise_name"
                 android:layout_toRightOf="@+id/sets"
                 android:layout_toEndOf="@+id/sets"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:textColor="#bdbdbd" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/previousDate"
+                android:textColor="#bdbdbd"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:paddingTop="16dp"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -63,7 +75,14 @@
                 android:textSize="30sp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_centerVertical="true" />
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/previousDate" />
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/highlight_bar"
+                android:id="@+id/highlightBar" />
 
         </RelativeLayout>
 

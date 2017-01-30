@@ -124,15 +124,16 @@ public class newExerciseFragment extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                View outerView = (View)view.getParent();
+                View outerView = (View)view.getParent().getParent();
                 MainActivity mainActivity = (MainActivity)getActivity();
                 ArrayList<Exercise> exercises = mainActivity.getUserData().getExercises();
                 EditText setInput = (EditText)outerView.findViewById(R.id.setsInput);
                 EditText repInput = (EditText)outerView.findViewById(R.id.repsInput);
+                EditText startingReps = (EditText)outerView.findViewById(R.id.initialRepsInput);
                 EditText weightInput = (EditText)outerView.findViewById(R.id.initialWeightInput);
                 AutoCompleteTextView nameInput = (AutoCompleteTextView)outerView.findViewById(R.id.nameAutoComplete);
 
-                if (setInput.getText().toString().equals("") || repInput.getText().toString().equals("") || weightInput.getText().toString().equals("") || weightInput.getText().toString().equals("")) {
+                if (setInput.getText().toString().equals("") || repInput.getText().toString().equals("") || startingReps.getText().toString().equals("") || weightInput.getText().toString().equals("")) {
                     Snackbar snackbar = Snackbar.make(outerView, "Please fill out all of the text fields", Snackbar.LENGTH_LONG);
                     View snackBarView = snackbar.getView();
                     snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPopup));
@@ -141,11 +142,12 @@ public class newExerciseFragment extends Fragment {
                     snackbar.show();
                 } else {
                     int startingSets = Integer.valueOf(setInput.getText().toString());
-                    int startingReps = Integer.valueOf(repInput.getText().toString());
+                    String repRange = repInput.getText().toString();
+                    int initialReps = Integer.valueOf(startingReps.getText().toString());
                     int startingWeight = Integer.valueOf(weightInput.getText().toString());
                     String exerciseName =nameInput.getText().toString();
-                    Exercise tempExercise = new Exercise(exerciseName, startingSets, startingReps);
-                    tempExercise.addSet(startingWeight, startingSets, startingReps, Calendar.getInstance());
+                    Exercise tempExercise = new Exercise(exerciseName, startingSets, repRange);
+                    tempExercise.addSet(startingWeight, startingSets, initialReps, Calendar.getInstance());
                     exercises.add(0, tempExercise);
                     FragmentTransaction fragmentTransaction = mainActivity.getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.setCustomAnimations(R.anim.enter_from_top, R.anim.exit_to_bottom);

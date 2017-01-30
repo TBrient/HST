@@ -1,20 +1,35 @@
 package workoutapp.tyler.workoutapplication;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
+import com.jjoe64.graphview.series.PointsGraphSeries;
+import com.jjoe64.graphview.series.Series;
+import com.nhaarman.supertooltips.ToolTip;
+import com.nhaarman.supertooltips.ToolTipRelativeLayout;
+import com.nhaarman.supertooltips.ToolTipView;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -70,25 +85,118 @@ public class graphFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_graph, container, false);
         GraphView graph = (GraphView)view.findViewById(R.id.graph);
         MainActivity activity = (MainActivity)getActivity();
-        Exercise exercisePressed = activity.getUserData().getCardViewExercisePressed();
-        DataPoint[] dataPoints = new DataPoint[exercisePressed.getCompletedWeights().size()];
-        for (int i = 0; i < dataPoints.length; i++) {
-            dataPoints[i] = new DataPoint((Date)(exercisePressed.getCompletedWeights().get(i)[1]), (int)(exercisePressed.getCompletedWeights().get(i)[0]));
+        final Exercise exercisePressed = activity.getUserData().getCardViewExercisePressed();
+
+        final DataPoint[] completePoints = new DataPoint[exercisePressed.getCompletedWeights().size()];
+        for (int i = 0; i < completePoints.length; i++) {
+            completePoints[i] = new DataPoint((Date)(exercisePressed.getCompletedWeights().get(i)[1]), (int)(exercisePressed.getCompletedWeights().get(i)[0]));
         }
         int whiteColor = ContextCompat.getColor(activity, R.color.whiteText);
         int accentColor = ContextCompat.getColor(activity, R.color.colorAccent);
 
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPoints);
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(completePoints);
         series.setDrawDataPoints(true);
         series.setDataPointsRadius(20);
         series.setThickness(15);
         series.setColor(accentColor);
 
+        series.setOnDataPointTapListener(new OnDataPointTapListener() {
+            @Override
+            public void onTap(Series series, DataPointInterface dataPointInterface) {
+                int index = findIndex(completePoints, dataPointInterface);
+
+                Object[] info = exercisePressed.getCompletedWeights().get(index);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Point Info");
+                builder.setMessage("Message");
+                AlertDialog alertDialog = builder.show();
+                String line1 = "Weight: " + info[0];
+                String line2;
+                if ((int)info[1] > 1) {
+                    line2 = info[1] + " Sets";
+                } else {
+                    line2 = info[1] + " Set";
+                }
+                String line3;
+                if (exercisePressed.getNumberOfSets() > 1) {
+                    line3 = exercisePressed.getNumberOfSets() + " Sets";
+                } else {
+                    line3 = exercisePressed.getNumberOfSets() + " Set";
+                }
+                TextView messageView = (TextView) alertDialog.findViewById(android.R.id.message);
+                String line4 = new SimpleDateFormat("MM/dd/yyyy").format((Date)info[2]);
+                messageView.setText(line1 + "\n" +
+                        line2 + "\n" +
+                        line3 + "\n" +
+                        line4 + "\n");
+                alertDialog.show();
+                alertDialog.getWindow().setLayout(800, 700);
+
+                //TODO: Create a custom popup so that it changes to the right color/doesn't look so bad
+
+            }
+        });
+
         graph.addSeries(series);
+
+        final DataPoint[] incompletePoints = new DataPoint[exercisePressed.getIncompleteWeights().size()];
+        for (int i = 0; i < incompletePoints.length; i++) {
+            incompletePoints[i] = new DataPoint((Date)(exercisePressed.getIncompleteWeights().get(i)[3]), (int)(exercisePressed.getIncompleteWeights().get(i)[0]));
+        }
+        final int secondarySeriesColor = ContextCompat.getColor(activity, R.color.extraGraphRed);
+
+        PointsGraphSeries<DataPoint> incompleteSeries = new PointsGraphSeries<>(incompletePoints);
+        incompleteSeries.setShape(PointsGraphSeries.Shape.POINT);
+        incompleteSeries.setSize(20);
+        incompleteSeries.setColor(secondarySeriesColor);
+
+//        final ToolTipRelativeLayout toolTipRelativeLayout = (ToolTipRelativeLayout)view.findViewById(R.id.toolTipLayout);
+//        final RelativeLayout backgroundLayout = (RelativeLayout)view.findViewById(R.id.graphRelativeLayout);
+
+        incompleteSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
+            @Override
+            public void onTap(Series series, DataPointInterface dataPointInterface) {
+                int index = findIndex(incompletePoints, dataPointInterface);
+
+                Object[] info = exercisePressed.getIncompleteWeights().get(index);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Point Info");
+                builder.setMessage("Message");
+                AlertDialog alertDialog = builder.show();
+                String line1 = "Weight: " + info[0];
+                String line2;
+                if ((int)info[1] > 1) {
+                    line2 = info[1] + " Sets";
+                } else {
+                    line2 = info[1] + " Set";
+                }
+                String line3;
+                if ((int)info[2] > 1) {
+                    line3 = info[2] + " Reps";
+                } else {
+                    line3 = info[2] + " Rep";
+                }
+                TextView messageView = (TextView) alertDialog.findViewById(android.R.id.message);
+                String line4 = new SimpleDateFormat("MM/dd/yyyy").format((Date)info[3]);
+                messageView.setText(line1 + "\n" +
+                        line2 + "\n" +
+                        line3 + "\n" +
+                        line4 + "\n");
+                alertDialog.show();
+                alertDialog.getWindow().setLayout(800, 700);
+
+                //TODO: Create a custom popup so that it changes to the right color/doesn't look so bad
+
+            }
+        });
+
+        graph.addSeries(incompleteSeries);
 
         GridLabelRenderer glr = graph.getGridLabelRenderer();
 
@@ -101,12 +209,29 @@ public class graphFragment extends Fragment {
         glr.setVerticalLabelsColor(whiteColor);
         glr.setHorizontalAxisTitleColor(whiteColor);
         glr.setVerticalAxisTitleColor(whiteColor);
-        if (dataPoints.length > 4) {
+
+        if (completePoints.length > 4 || incompletePoints.length > 4) {
             glr.setNumHorizontalLabels(5);
         } else {
-            glr.setNumHorizontalLabels(dataPoints.length);
+            if (completePoints.length > incompletePoints.length) {
+                glr.setNumHorizontalLabels(completePoints.length);
+            } else {
+                glr.setNumHorizontalLabels(incompletePoints.length);
+            }
         }
         graph.getViewport().setBorderColor(ContextCompat.getColor(activity, R.color.colorPopup));
+
+        if (exercisePressed.getIncompleteWeights().size() > 0) {
+            if ((int) exercisePressed.getIncompleteWeights().get(exercisePressed.getIncompleteWeights().size() - 1)[0] > graph.getViewport().getMaxY(true)) {
+                graph.getViewport().setMaxY((int) exercisePressed.getIncompleteWeights().get(exercisePressed.getIncompleteWeights().size() - 1)[0]);
+                graph.getViewport().setYAxisBoundsManual(true);
+            }
+
+            if ((int) exercisePressed.getIncompleteWeights().get(0)[0] < graph.getViewport().getMinY(true)) {
+                graph.getViewport().setMinY((int) exercisePressed.getIncompleteWeights().get(0)[0]);
+                graph.getViewport().setYAxisBoundsManual(true);
+            }
+        }
 
         graph.getViewport().setMinX(((Date)(exercisePressed.getCompletedWeights().get(0)[1])).getTime());
         graph.getViewport().setMaxX(((Date)(exercisePressed.getCompletedWeights().get(exercisePressed.getCompletedWeights().size()-1)[1])).getTime());
@@ -117,6 +242,15 @@ public class graphFragment extends Fragment {
         graph.getViewport().setMaxXAxisSize(300);
 
         return view;
+    }
+
+    private int findIndex(DataPoint[] datapoints, DataPointInterface dataPointInterface) {
+        for (int i = 0; i < datapoints.length; i++) {
+            if (datapoints[i] == dataPointInterface) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

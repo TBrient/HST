@@ -19,17 +19,32 @@ public class Exercise implements Serializable{
 
     private String exerciseName;
 
-    private int numberOfSets, numberOfReps;
+    private int numberOfSets;
+    private int[] numberOfReps;
 
-    private ArrayList<Object[]> completedWeights = new ArrayList<>(); //First Entry: Weight, Second Entry: Date
+    private ArrayList<Object[]> completedWeights = new ArrayList<>(); //First Entry: Weight, Second Entry: Rep Count, Third Entry: Date
 
     private ArrayList<Object[]> incompleteWeights = new ArrayList<>(); //First entry: Weight, Second Entry: Set count, Third Entry: Rep Count, Fourth Entry: Date
 
 
-    public Exercise(String Name, int setNum, int repNum){
+    public Exercise(String Name, int setNum, String repNum){
         this.exerciseName = Name;
-        this.numberOfReps = repNum;
         this.numberOfSets = setNum;
+        int firstRep;
+        int secondRep;
+        if (repNum.contains("-")) {
+            firstRep = Integer.valueOf(repNum.split("-")[0]);
+            secondRep = Integer.valueOf(repNum.split("-")[1]);
+            if (firstRep > secondRep) {
+                int place = firstRep;
+                firstRep = secondRep;
+                secondRep = place;
+            }
+        } else {
+            firstRep = Integer.valueOf(repNum);
+            secondRep = Integer.valueOf(repNum);
+        }
+        numberOfReps = new int[]{firstRep, secondRep};
     }
 
     public void setExerciseName(String exerciseName) {
@@ -40,22 +55,36 @@ public class Exercise implements Serializable{
         this.numberOfSets = numberOfSets;
     }
 
-    public void setNumberOfReps(int numberOfReps) {
-        this.numberOfReps = numberOfReps;
+    public void setNumberOfReps(String repNum) {
+        int secondRep;
+        int firstRep;
+        if (repNum.contains("-")) {
+            firstRep = Integer.valueOf(repNum.split("-")[0]);
+            secondRep = Integer.valueOf(repNum.split("-")[1]);
+            if (firstRep > secondRep) {
+                int place = firstRep;
+                firstRep = secondRep;
+                secondRep = place;
+            }
+        } else {
+            firstRep = Integer.valueOf(repNum);
+            secondRep = Integer.valueOf(repNum);
+        }
+        numberOfReps = new int[]{firstRep, secondRep};
     }
 
-    public void addSet(int weight, int sets, int reps, Calendar cal){ //TODO: Add a date insert option
+    public void addSet(int weight, int sets, int reps, Calendar cal){
         Date date = cal.getTime();
-        if (sets < numberOfSets || reps < numberOfReps) {
+        if (sets < numberOfSets || reps < numberOfReps[0] || reps > numberOfReps[1]) {
             incompleteWeights.add(new Object[]{weight, sets, reps, date});
             Collections.sort(incompleteWeights, new Comparator<Object[]>() {
                 @Override
                 public int compare(Object[] objects, Object[] t1) {
-                    Date d1 = (Date)objects[1];
-                    Date d2 = (Date)t1[1];
-                    if (d1.getTime() < d2.getTime()) {
+                    int d1 = (int)objects[0];
+                    int d2 = (int)t1[0];
+                    if (d1 < d2) {
                         return -1;
-                    } else if (d1.getTime() == d2.getTime()) {
+                    } else if (d1 == d2) {
                         return 0;
                     } else {
                         return 1;
@@ -63,7 +92,7 @@ public class Exercise implements Serializable{
                 }
             });
         } else {
-            completedWeights.add(new Object[]{weight, date});
+            completedWeights.add(new Object[]{weight, reps,date});
             Collections.sort(completedWeights, new Comparator<Object[]>() {
                 @Override
                 public int compare(Object[] objects, Object[] t1) {
@@ -89,7 +118,7 @@ public class Exercise implements Serializable{
         return numberOfSets;
     }
 
-    public int getNumberOfReps() {
+    public int[] getRepRange () {
         return numberOfReps;
     }
 

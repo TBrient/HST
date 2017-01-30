@@ -7,4 +7,5 @@
     <color name="windowBackground">#1b2836</color>
     <color name="colorPopup">#273a4f</color>
     <color name="hintColor">#64ffffff</color>
+    <color name="extraGraphRed">#e74c3c</color>
 </resources>

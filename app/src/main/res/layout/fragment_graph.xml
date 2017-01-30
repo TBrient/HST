@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".graphFragment"
-    android:background="@color/windowBackground">
+    android:background="@color/windowBackground"
+    android:id="@+id/graphRelativeLayout">
 
     <LinearLayout
         android:orientation="vertical"
@@ -22,5 +23,10 @@
             android:layout_width="match_parent" />
 
     </LinearLayout>
+
+    <com.nhaarman.supertooltips.ToolTipRelativeLayout
+        android:id="@+id/toolTipLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </RelativeLayout>
