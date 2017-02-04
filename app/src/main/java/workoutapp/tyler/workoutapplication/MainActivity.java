@@ -16,13 +16,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.Console;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements CompareGraphsFragment.OnFragmentInteractionListener, mainWeightFragment.OnFragmentInteractionListener, BodyWeightGraphFragment.OnFragmentInteractionListener, addBodyWeightFragment.OnFragmentInteractionListener, graphFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener, addWeightFragment.OnFragmentInteractionListener,CardTabView.OnFragmentInteractionListener, workoutapp.tyler.workoutapplication.exerciseCardsFragment.OnFragmentInteractionListener, newExerciseFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements shareFragment.OnFragmentInteractionListener, CompareGraphsFragment.OnFragmentInteractionListener, mainWeightFragment.OnFragmentInteractionListener, BodyWeightGraphFragment.OnFragmentInteractionListener, addBodyWeightFragment.OnFragmentInteractionListener, graphFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener, addWeightFragment.OnFragmentInteractionListener,CardTabView.OnFragmentInteractionListener, workoutapp.tyler.workoutapplication.exerciseCardsFragment.OnFragmentInteractionListener, newExerciseFragment.OnFragmentInteractionListener {
 
     NavigationView navigationView = null;
     Toolbar toolbar = null;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements CompareGraphsFrag
     private CompareGraphsFragment compareGraphsFragment;
     private UserData userData;
     private Fragment currentFragment;
-    private ShareActionProvider mShareActionProvider;
+    private shareFragment ShareFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +44,11 @@ public class MainActivity extends AppCompatActivity implements CompareGraphsFrag
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         exerciseCardsFragment = new exerciseCardsFragment();
         bodyWeightGraphFragment = new BodyWeightGraphFragment();
         compareGraphsFragment = new CompareGraphsFragment();
+        ShareFragment = new shareFragment();
 
         //Set fragment
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements CompareGraphsFrag
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, -R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -80,8 +83,6 @@ public class MainActivity extends AppCompatActivity implements CompareGraphsFrag
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem item = menu.findItem(R.id.action_share);
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
         return true;
     }
 
@@ -96,13 +97,6 @@ public class MainActivity extends AppCompatActivity implements CompareGraphsFrag
                 return true;
             case R.id.action_settings:
                 //settings click
-            case R.id.action_share:
-                //Share click
-                Intent sharingIntent = new Intent(Intent.ACTION_SENDTO);
-                sharingIntent.setType("text/plain");
-                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Body");
-                startActivity(Intent.createChooser(sharingIntent, "Share using"));
         }
 
         return super.onOptionsItemSelected(item);
@@ -138,6 +132,14 @@ public class MainActivity extends AppCompatActivity implements CompareGraphsFrag
             setTitle(R.string.compare_graphs_fragment_title);
             fragmentTransaction.commit();
             currentFragment = compareGraphsFragment;
+        } else if (id == R.id.nav_share) {
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragmentContainer, ShareFragment, "toShare");
+            fragmentTransaction.addToBackStack("toShare");
+            setTitle("");
+            setTitle(R.string.share_fragment_title);
+            fragmentTransaction.commit();
+            currentFragment = ShareFragment;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

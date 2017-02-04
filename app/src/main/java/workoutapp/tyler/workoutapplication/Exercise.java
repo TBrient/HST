@@ -17,6 +17,8 @@ import java.util.Locale;
 
 public class Exercise implements Serializable{
 
+    public int WEIGHT = 0;
+
     private String exerciseName;
 
     private int numberOfSets;
@@ -96,8 +98,44 @@ public class Exercise implements Serializable{
             Collections.sort(completedWeights, new Comparator<Object[]>() {
                 @Override
                 public int compare(Object[] objects, Object[] t1) {
-                    Date d1 = (Date)objects[1];
-                    Date d2 = (Date)t1[1];
+                    Date d1 = (Date)objects[2];
+                    Date d2 = (Date)t1[2];
+                    if (d1.getTime() < d2.getTime()) {
+                        return -1;
+                    } else if (d1.getTime() == d2.getTime()) {
+                        return 0;
+                    } else {
+                        return 1;
+                    }
+                }
+            });
+        }
+    }
+
+    public void addSet(int weight, int sets, int reps, Date date){
+        if (sets < numberOfSets || reps < numberOfReps[0] || reps > numberOfReps[1]) {
+            incompleteWeights.add(new Object[]{weight, sets, reps, date});
+            Collections.sort(incompleteWeights, new Comparator<Object[]>() {
+                @Override
+                public int compare(Object[] objects, Object[] t1) {
+                    int d1 = (int)objects[0];
+                    int d2 = (int)t1[0];
+                    if (d1 < d2) {
+                        return -1;
+                    } else if (d1 == d2) {
+                        return 0;
+                    } else {
+                        return 1;
+                    }
+                }
+            });
+        } else {
+            completedWeights.add(new Object[]{weight, reps,date});
+            Collections.sort(completedWeights, new Comparator<Object[]>() {
+                @Override
+                public int compare(Object[] objects, Object[] t1) {
+                    Date d1 = (Date)objects[2];
+                    Date d2 = (Date)t1[2];
                     if (d1.getTime() < d2.getTime()) {
                         return -1;
                     } else if (d1.getTime() == d2.getTime()) {

@@ -115,7 +115,7 @@ public class addWeightFragment extends Fragment {
 
         setsDefault.setText(String.valueOf(exercise.getNumberOfSets()));
         int[] repRange = exercise.getRepRange();
-        repsDefault.setText(Integer.toString(repRange[0]));
+        repsDefault.setText(String.valueOf(repRange[0]));
 
         final TextView dateText = (TextView)view.findViewById(R.id.dateTextView);
 

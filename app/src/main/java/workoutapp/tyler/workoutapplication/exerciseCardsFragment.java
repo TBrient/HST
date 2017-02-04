@@ -29,7 +29,7 @@ public class exerciseCardsFragment extends Fragment  {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private ArrayList<Exercise> exercises;
-    private RVAdapter adapter;
+    private ExerciseRVAdapter adapter;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -72,7 +72,7 @@ public class exerciseCardsFragment extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         initializeData();
-        adapter = new RVAdapter(exercises);
+        adapter = new ExerciseRVAdapter(exercises);
 
         //Creates a view
         LinearLayoutManager llm = new LinearLayoutManager(this.getActivity());

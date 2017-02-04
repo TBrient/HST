@@ -82,7 +82,7 @@ public class BodyWeightGraphFragment extends Fragment {
         ArrayList<Object[]> bodyWeight = activity.getUserData().getBodyWeight();
         DataPoint[] dataPoints = new DataPoint[bodyWeight.size()];
         for (int i = 0; i < dataPoints.length; i++) {
-            dataPoints[i] = new DataPoint((Date)(bodyWeight.get(i)[1]), (int)(bodyWeight.get(i)[0]));
+            dataPoints[i] = new DataPoint((Date)(bodyWeight.get(i)[2]), (int)(bodyWeight.get(i)[0]));
         }
         int whiteColor = ContextCompat.getColor(activity, R.color.whiteText);
         int accentColor = ContextCompat.getColor(activity, R.color.colorAccent);
@@ -118,8 +118,8 @@ public class BodyWeightGraphFragment extends Fragment {
         //series.setOnDataPointTapListener(); datapoint click
 
         if (bodyWeight.size()  > 0) {
-            graph.getViewport().setMinX(((Date) (bodyWeight.get(0)[1])).getTime());
-            graph.getViewport().setMaxX(((Date) (bodyWeight.get(bodyWeight.size() - 1)[1])).getTime());
+            graph.getViewport().setMinX(((Date) (bodyWeight.get(0)[2])).getTime());
+            graph.getViewport().setMaxX(((Date) (bodyWeight.get(bodyWeight.size() - 1)[2])).getTime());
             graph.getViewport().setXAxisBoundsManual(true);
         }
 

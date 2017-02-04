@@ -93,7 +93,7 @@ public class graphFragment extends Fragment {
 
         final DataPoint[] completePoints = new DataPoint[exercisePressed.getCompletedWeights().size()];
         for (int i = 0; i < completePoints.length; i++) {
-            completePoints[i] = new DataPoint((Date)(exercisePressed.getCompletedWeights().get(i)[1]), (int)(exercisePressed.getCompletedWeights().get(i)[0]));
+            completePoints[i] = new DataPoint((Date)(exercisePressed.getCompletedWeights().get(i)[2]), (int)(exercisePressed.getCompletedWeights().get(i)[0]));
         }
         int whiteColor = ContextCompat.getColor(activity, R.color.whiteText);
         int accentColor = ContextCompat.getColor(activity, R.color.colorAccent);
@@ -233,8 +233,8 @@ public class graphFragment extends Fragment {
             }
         }
 
-        graph.getViewport().setMinX(((Date)(exercisePressed.getCompletedWeights().get(0)[1])).getTime());
-        graph.getViewport().setMaxX(((Date)(exercisePressed.getCompletedWeights().get(exercisePressed.getCompletedWeights().size()-1)[1])).getTime());
+        graph.getViewport().setMinX(((Date)(exercisePressed.getCompletedWeights().get(0)[2])).getTime());
+        graph.getViewport().setMaxX(((Date)(exercisePressed.getCompletedWeights().get(exercisePressed.getCompletedWeights().size()-1)[2])).getTime());
         graph.getViewport().setXAxisBoundsManual(true);
 
         glr.setHumanRounding(false);

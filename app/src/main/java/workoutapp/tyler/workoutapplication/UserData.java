@@ -13,7 +13,7 @@ import java.util.Date;
 public class UserData {
 
     private ArrayList<Exercise> exercises;
-    private ArrayList<Object[]> bodyWeight;
+    private ArrayList<Object[]> bodyWeight; //weight, nothing, date
     private Exercise cardViewExercisePressed;
     //private int workoutNum; //1-18 Number of Days worked out in that session so far
 
@@ -69,12 +69,12 @@ public class UserData {
 
     public void addBodyWeight(int weight, Calendar cal) {
         Date date = cal.getTime();
-            bodyWeight.add(new Object[]{weight, date});
+            bodyWeight.add(new Object[]{weight, null, date});
             Collections.sort(bodyWeight, new Comparator<Object[]>() {
                 @Override
                 public int compare(Object[] objects, Object[] t1) {
-                    Date d1 = (Date)objects[1];
-                    Date d2 = (Date)t1[1];
+                    Date d1 = (Date)objects[2];
+                    Date d2 = (Date)t1[2];
                     if (d1.getTime() < d2.getTime()) {
                         return -1;
                     } else if (d1.getTime() == d2.getTime()) {

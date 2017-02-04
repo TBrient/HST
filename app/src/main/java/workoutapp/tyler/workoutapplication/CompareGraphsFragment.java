@@ -124,14 +124,14 @@ public class CompareGraphsFragment extends Fragment {
                     dataSets[0] = bodyWeight;
                     datapoints = new DataPoint[bodyWeight.size()];
                     for (int j = 0; j < bodyWeight.size(); j++) {
-                        datapoints[j] = new DataPoint((Date)(bodyWeight.get(j)[1]), (int)(bodyWeight.get(j)[0]));
+                        datapoints[j] = new DataPoint((Date)(bodyWeight.get(j)[2]), (int)(bodyWeight.get(j)[0]));
                     }
                     if (bodyWeight.size() > 0) {
-                        if (graph.getViewport().getMinX(true) > ((Date) (bodyWeight.get(0)[1])).getTime()) {
-                            graph.getViewport().setMinX(((Date) (bodyWeight.get(0)[1])).getTime());
+                        if (graph.getViewport().getMinX(true) > ((Date) (bodyWeight.get(0)[2])).getTime()) {
+                            graph.getViewport().setMinX(((Date) (bodyWeight.get(0)[2])).getTime());
                         }
-                        if (graph.getViewport().getMaxX(true) < ((Date) (bodyWeight.get(bodyWeight.size() - 1)[1])).getTime()) {
-                            graph.getViewport().setMaxX(((Date) (bodyWeight.get(bodyWeight.size() - 1)[1])).getTime());
+                        if (graph.getViewport().getMaxX(true) < ((Date) (bodyWeight.get(bodyWeight.size() - 1)[2])).getTime()) {
+                            graph.getViewport().setMaxX(((Date) (bodyWeight.get(bodyWeight.size() - 1)[2])).getTime());
                         }
                     }
                     graph.getViewport().setXAxisBoundsManual(true);
@@ -141,7 +141,7 @@ public class CompareGraphsFragment extends Fragment {
                     datapoints = new DataPoint[secondDataSet.getCompletedWeights().size()];
                     dataSets[0] = secondDataSet.getCompletedWeights();
                     for (int j = 0; j < datapoints.length; j++) {
-                        datapoints[j] = new DataPoint((Date)(secondDataSet.getCompletedWeights().get(j)[1]), (int)(secondDataSet.getCompletedWeights().get(j)[0]));
+                        datapoints[j] = new DataPoint((Date)(secondDataSet.getCompletedWeights().get(j)[2]), (int)(secondDataSet.getCompletedWeights().get(j)[0]));
                     }
                     names[0] = secondDataSet.getExerciseName();
                 }
@@ -199,7 +199,7 @@ public class CompareGraphsFragment extends Fragment {
 //                }
 
 
-                if (dataSets[1] != null) {
+                if (dataSets[1] != null && dataSets[0] != null) {
                     resetGraphBounds(dataSets);
                     graph.getViewport().setXAxisBoundsManual(true);
                 }
@@ -220,7 +220,7 @@ public class CompareGraphsFragment extends Fragment {
                     dataSets[1] = bodyWeight;
                     datapoints = new DataPoint[bodyWeight.size()];
                     for (int j = 0; j < bodyWeight.size(); j++) {
-                        datapoints[j] = new DataPoint((Date)(bodyWeight.get(j)[1]), (int)(bodyWeight.get(j)[0]));
+                        datapoints[j] = new DataPoint((Date)(bodyWeight.get(j)[2]), (int)(bodyWeight.get(j)[0]));
                     }
                     names[1] = "Body Weight";
                 } else {
@@ -228,7 +228,7 @@ public class CompareGraphsFragment extends Fragment {
                     datapoints = new DataPoint[secondDataSet.getCompletedWeights().size()];
                     dataSets[1] = secondDataSet.getCompletedWeights();
                     for (int j = 0; j < datapoints.length; j++) {
-                        datapoints[j] = new DataPoint((Date)(secondDataSet.getCompletedWeights().get(j)[1]), (int)(secondDataSet.getCompletedWeights().get(j)[0]));
+                        datapoints[j] = new DataPoint((Date)(secondDataSet.getCompletedWeights().get(j)[2]), (int)(secondDataSet.getCompletedWeights().get(j)[0]));
                     }
                     names[1] = secondDataSet.getExerciseName();
                 }
@@ -242,15 +242,15 @@ public class CompareGraphsFragment extends Fragment {
 
                 glr.setNumHorizontalLabels(6);
                 glr.setNumVerticalLabels(5);
-                if (dataSets[0] == null && dataSets[1] == null) {
-                    graph.setVisibility(View.GONE);
-                    TextView noData = (TextView)(view.findViewById(R.id.noDataText));
-                    noData.setVisibility(View.VISIBLE);
-                } else {
-                    graph.setVisibility(View.VISIBLE);
-                    TextView noData = (TextView)(view.findViewById(R.id.noDataText));
-                    noData.setVisibility(View.INVISIBLE);
-                }
+//                if (dataSets[0] == null && dataSets[1] == null) {
+//                    graph.setVisibility(View.GONE);
+//                    TextView noData = (TextView)(view.findViewById(R.id.noDataText));
+//                    noData.setVisibility(View.VISIBLE);
+//                } else {
+//                    graph.setVisibility(View.VISIBLE);
+//                    TextView noData = (TextView)(view.findViewById(R.id.noDataText));
+//                    noData.setVisibility(View.INVISIBLE);
+//                }
 //                if (dataSets[0] != null) {
 //                    if (dataSets[1] != null) { //Only dataset 0 is populated
 //                        if (dataSets[0].size() > 4 && dataSets[1].size() > 4) {
@@ -325,15 +325,25 @@ public class CompareGraphsFragment extends Fragment {
 
     private void resetGraphBounds(ArrayList<Object[]>[] dataSets){
         glr.setNumHorizontalLabels(6);
-        if (((Date)(dataSets[0].get(0)[1])).getTime() < ((Date)(dataSets[1].get(0)[1])).getTime()) {
-            graph.getViewport().setMinX(((Date)(dataSets[0].get(0)[1])).getTime());
+        if (dataSets[0].size() != 0 && dataSets[1].size()!=0) {
+            if (((Date) (dataSets[0].get (0)[2])).getTime() < ((Date) (dataSets[1].get(0)[2])).getTime()) {
+                graph.getViewport().setMinX(((Date) (dataSets[0].get(0)[2])).getTime());
+            } else {
+                graph.getViewport().setMinX(((Date) (dataSets[1].get(0)[2])).getTime());
+            }
+            if (((Date) (dataSets[0].get(dataSets[0].size() - 1)[2])).getTime() > ((Date) (dataSets[1].get(dataSets[1].size() - 1)[2])).getTime()) {
+                graph.getViewport().setMaxX(((Date) (dataSets[0].get(dataSets[0].size() - 1)[2])).getTime());
+            } else {
+                graph.getViewport().setMaxX(((Date) (dataSets[1].get(dataSets[1].size() - 1)[2])).getTime());
+            }
+
+            //TODO: GRAPH DISAPPEARS WHEN TWO OF THE SAME EXERCISE ARE CHOSEN (SHOULDN'T BE AN ISSUE GREY ONE OUT)
+        } else if (dataSets[0].size() == 0) {
+            graph.getViewport().setMinX(((Date) (dataSets[1].get(0)[2])).getTime());
+            graph.getViewport().setMaxX(((Date) (dataSets[1].get(0)[2])).getTime() + 432000000); //432000000 is 5 days in milliseconds
         } else {
-            graph.getViewport().setMinX(((Date)(dataSets[1].get(0)[1])).getTime());
-        }
-        if (((Date)(dataSets[0].get(dataSets[0].size()-1)[1])).getTime() > ((Date)(dataSets[1].get(dataSets[1].size()-1)[1])).getTime()) {
-            graph.getViewport().setMaxX(((Date)(dataSets[0].get(dataSets[0].size()-1)[1])).getTime());
-        } else {
-            graph.getViewport().setMaxX(((Date)(dataSets[1].get(dataSets[1].size()-1)[1])).getTime());
+            graph.getViewport().setMinX(((Date) (dataSets[0].get(0)[2])).getTime());
+            graph.getViewport().setMaxX(((Date) (dataSets[0].get(0)[2])).getTime() + 432000000);
         }
     }
 
