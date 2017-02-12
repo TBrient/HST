@@ -84,12 +84,15 @@ public class shareFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         MainActivity activity = (MainActivity)getActivity();
-        ArrayList<Exercise> exercises = new ArrayList<>(activity.getUserData().getExercises());
+        final ArrayList<Exercise> exercises = new ArrayList<>(activity.getUserData().getExercises());
         ArrayList<Object[]> bodyWeight = activity.getUserData().getBodyWeight();
         Exercise BWExercise = new Exercise("Body Weight", -1, "0");
-        for (int i = 0; i < bodyWeight.size(); i++) {
-            BWExercise.addSet((int)(bodyWeight.get(i)[0]), -1, 0, (Date)(bodyWeight.get(i)[1]));
+        for (Object[] bw: bodyWeight) {
+            BWExercise.addSet((int)(bw[0]), -1, 0, (Date)(bw[2]));
         }
+//        for (int i = 0; i < bodyWeight.size(); i++) {
+//            BWExercise.addSet((int)(bodyWeight.get(i)[0]), -1, 0, (Date)(bodyWeight.get(i)[2]));
+//        }
         exercises.add(BWExercise);
 
         adapter = new ShareRVAdapter(exercises, new ShareRVAdapter.OnItemCheckListener() {
@@ -120,62 +123,84 @@ public class shareFragment extends Fragment {
                 ArrayList<ArrayList<String>> ExerciseText = new ArrayList<ArrayList<String>>();
 
                 ArrayList<Date> dates = new ArrayList<Date>();
-                for (int i = 0; i < selectedExercises.size(); i++) {
-                    ArrayList<Object[]> currentExercise1 = selectedExercises.get(i).getCompletedWeights();
-                    for (int j = 0; j < currentExercise1.size(); j++) {
-                        Date tempDate = (Date)currentExercise1.get(j)[2];
+
+                for (Exercise e: selectedExercises) {
+                    ArrayList<Object[]> currentExercise1 = e.getCompletedWeights();
+                    for (Object[] sets: currentExercise1) {
+                        Date tempDate = (Date)sets[2];
                         if (!dates.contains(tempDate)) {
                             dates.add(getIndexOfDate(dates, tempDate),tempDate);
                         }
                     }
-                    ArrayList<Object[]> currentExercise2 = selectedExercises.get(i).getIncompleteWeights();
-                    for (int j = 0; j < currentExercise2.size(); j++) {
-                        Date tempDate = (Date)currentExercise2.get(j)[3];
-                        if (!dates.contains(tempDate)) {
-                            dates.add(getIndexOfDate(dates, tempDate),tempDate);
-                        }
-                    }
-                }
-                for (int i = 0; i < selectedExercises.size(); i++) {
-                    ArrayList<Object[]> currentExercise = selectedExercises.get(i).getIncompleteWeights();
-                    for (int j = 0; j < currentExercise.size(); j++) {
-                        Date tempDate = (Date)currentExercise.get(j)[2];
+                    ArrayList<Object[]> currentExercise2 = e.getIncompleteWeights();
+                    for (Object[] sets: currentExercise2) {
+                        Date tempDate = (Date)sets[3];
                         if (!dates.contains(tempDate)) {
                             dates.add(getIndexOfDate(dates, tempDate),tempDate);
                         }
                     }
                 }
-                for (int i = 0; i < selectedExercises.size(); i++) {
-                    ArrayList<Object[]> currentExercise1 = selectedExercises.get(i).getCompletedWeights();
+                int index1 = 0;
+                for (Exercise e: selectedExercises) {
+                    ArrayList<Object[]> currentExercise1 = e.getCompletedWeights();
                     ArrayList<String> tempArrayList = new ArrayList<String>();
-                    tempArrayList.add(selectedExercises.get(i).getExerciseName());
-                    ExerciseText.add(i, tempArrayList);
-                    for (int j = 0; j < currentExercise1.size(); j++) {
-                        Date tempDate = (Date)currentExercise1.get(j)[2];
-                        String setsString = String.valueOf(selectedExercises.get(i).getNumberOfSets()) + " Sets, ";
-                        String repsString = String.valueOf((int)(currentExercise1.get(j)[1])) + " Reps";
-                        String weightString = String.valueOf((int)(currentExercise1.get(j)[0])) + " lbs, ";
-                        ExerciseText.get(i).add(dates.indexOf(tempDate), weightString + repsString + setsString); //TODO: java.lang.IndexOutOfBoundsException: Index: 2, Size: 1
+                    tempArrayList.add(e.getExerciseName());
+                    for (int j = 0; j < dates.size(); j++) {
+                        tempArrayList.add(" ");
                     }
-                    ArrayList<Object[]> currentExercise2 = selectedExercises.get(i).getIncompleteWeights();
-                    for (int j = 0; j < currentExercise2.size(); j++) {
-                        Date tempDate = (Date)currentExercise2.get(j)[3];
-                        if (!dates.contains(tempDate)) {
-                            dates.add(getIndexOfDate(dates, tempDate),tempDate);
-                        }
-                        String setsString = String.valueOf((int)(currentExercise2.get(j)[1])) + " Sets, ";
-                        String repsString = String.valueOf((int)(currentExercise2.get(j)[2])) + " Reps";
-                        String weightString = String.valueOf((int)(currentExercise2.get(j)[0])) + " lbs, ";
-                        ExerciseText.get(i).add(dates.indexOf(tempDate), weightString + repsString + setsString);
+                    ExerciseText.add(index1, tempArrayList);
+                    for (Object[] set: currentExercise1) {
+                        Date tempDate = (Date)set[2];
+                        String setsString = String.valueOf(e.getNumberOfSets()) + " Sets, ";
+                        String repsString = String.valueOf((int)(set[1])) + " Reps";
+                        String weightString = String.valueOf((int)(set[0])) + " lbs, ";
+                        ExerciseText.get(index1).set(dates.indexOf(tempDate), weightString + repsString + setsString); //TODO: java.lang.IndexOutOfBoundsException: Index: 2, Size: 1
                     }
-                }
-                String dateString = createCSSStringFromDateArrayList(dates);
-                String combinedString = dateString;
-                for (int i = 0; i < ExerciseText.size(); i++) {
-                    combinedString = combinedString + "\n" + createCSSStringFromStringArrayList(ExerciseText.get(i));
+
+                    ArrayList<Object[]> currentExercise2 = e.getIncompleteWeights();
+                    for(Object[] set: currentExercise2) {
+                        Date tempDate = (Date)set[3];
+                        String setsString = String.valueOf((int)(set[1])) + " Sets, ";
+                        String repsString = String.valueOf((int)(set[2])) + " Reps";
+                        String weightString = String.valueOf((int)(set[0])) + " lbs, ";
+                        ExerciseText.get(index1).set(dates.indexOf(tempDate), weightString + repsString + setsString);
+                    }
+                    index1++;
                 }
 
-                //TODO: Finish creating column and data strings
+//                for (int i = 0; i < selectedExercises.size(); i++) {
+//                    ArrayList<Object[]> currentExercise1 = selectedExercises.get(i).getCompletedWeights();
+//                    ArrayList<String> tempArrayList = new ArrayList<String>();
+//                    tempArrayList.add(selectedExercises.get(i).getExerciseName());
+//                    for (int j = 0; j < dates.size(); j++) {
+//                        tempArrayList.add(" ");
+//                    }
+//                    ExerciseText.add(i, tempArrayList);
+//                    for (int j = 0; j < currentExercise1.size(); j++) {
+//                        Date tempDate = (Date)currentExercise1.get(j)[2];
+//                        String setsString = String.valueOf(selectedExercises.get(i).getNumberOfSets()) + " Sets, ";
+//                        String repsString = String.valueOf((int)(currentExercise1.get(j)[1])) + " Reps";
+//                        String weightString = String.valueOf((int)(currentExercise1.get(j)[0])) + " lbs, ";
+//                        ExerciseText.get(i).set(dates.indexOf(tempDate), weightString + repsString + setsString); //TODO: java.lang.IndexOutOfBoundsException: Index: 2, Size: 1
+//                    }
+//                    ArrayList<Object[]> currentExercise2 = selectedExercises.get(i).getIncompleteWeights();
+//                    for (int j = 0; j < currentExercise2.size(); j++) {
+//                        Date tempDate = (Date)currentExercise2.get(j)[3];
+//                        String setsString = String.valueOf((int)(currentExercise2.get(j)[1])) + " Sets, ";
+//                        String repsString = String.valueOf((int)(currentExercise2.get(j)[2])) + " Reps";
+//                        String weightString = String.valueOf((int)(currentExercise2.get(j)[0])) + " lbs, ";
+//                        ExerciseText.get(i).set(dates.indexOf(tempDate), weightString + repsString + setsString);
+//                    }
+//                }
+                String dateString = createCSSStringFromDateArrayList(dates);
+                String combinedString = dateString;
+//                for (int i = 0; i < ExerciseText.size(); i++) {
+//                    combinedString = combinedString + "\n" + createCSSStringFromStringArrayList(ExerciseText.get(i));
+//                }
+                for (ArrayList<String> s: ExerciseText) {
+                    combinedString = combinedString + "\n" + createCSSStringFromStringArrayList(s);
+                }
+
 
                 File file = null;
                 File root = Environment.getExternalStorageDirectory();
@@ -216,13 +241,22 @@ public class shareFragment extends Fragment {
 
     private String createCSSStringFromStringArrayList(ArrayList<String> array){
         String finalString = "\"";
-        for (int i = 0; i < array.size(); i++) {
-            if (i != 0 && i != array.size()-1) {
-                finalString = finalString + "\",\"" + array.get(i);
+        int index = 0;
+        for (String d: array) {
+            if (index != 0 && index != array.size()-1) {
+                finalString = finalString + "\",\"" + d;
             } else {
-                finalString = finalString + array.get(i);
+                finalString = finalString + d;
             }
+            index++;
         }
+//        for (int i = 0; i < array.size(); i++) {
+//            if (i != 0 && i != array.size()-1) {
+//                finalString = finalString + "\",\"" + array.get(i);
+//            } else {
+//                finalString = finalString + array.get(i);
+//            }
+//        }
         finalString = finalString + "\"";
         return finalString;
     }
@@ -230,24 +264,38 @@ public class shareFragment extends Fragment {
     private String createCSSStringFromDateArrayList(ArrayList<Date> array) {
         String finalString = "\"Exercise Name";
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-        for (int i = 0; i < array.size(); i++) {
-            if (i != array.size()-1) {
-                finalString = finalString + "\",\"" + sdf.format(array.get(i));
+        int index = 0;
+        for (Date d: array) {
+            if (index != array.size()-1) {
+                finalString = finalString + "\",\"" + sdf.format(d);
             } else {
-                finalString = finalString + sdf.format(array.get(i));
+                finalString = finalString + sdf.format(d);
             }
+            index++;
         }
+//        for (int i = 0; i < array.size(); i++) {
+//            if (i != array.size()-1) {
+//                finalString = finalString + "\",\"" + sdf.format(array.get(i));
+//            } else {
+//                finalString = finalString + sdf.format(array.get(i));
+//            }
+//        }
         finalString = finalString + "\"";
         return finalString;
     }
 
     private int getIndexOfDate(ArrayList<Date> dates, Date date){
-        for (int i = 0; i < dates.size(); i++) {
-            if (date.getTime() > dates.get(i).getTime()) {
-                return i;
-            }
+//        for (int i = 0; i < dates.size(); i++) {
+//            if (date.getTime() > dates.get(i).getTime()) {
+//                return i;
+//            }
+//        }
+        int index = dates.indexOf(date);
+        if (index == -1) {
+            return dates.size();
+        } else {
+            return index;
         }
-        return dates.size();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

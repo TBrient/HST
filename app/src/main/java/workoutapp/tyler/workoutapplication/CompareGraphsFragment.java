@@ -96,8 +96,8 @@ public class CompareGraphsFragment extends Fragment {
 
         spinnerList.add("Body Weight");
 
-        for (int i = 0; i < exercises.size(); i++) {
-            spinnerList.add(exercises.get(i).getExerciseName());
+        for(Exercise e: exercises) {
+            spinnerList.add(e.getExerciseName());
         }
 
         final ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), R.layout.custom_spinner, spinnerList);
@@ -295,8 +295,10 @@ public class CompareGraphsFragment extends Fragment {
         spin1.setSelection(0);
         spin1.performItemClick(spin1.getChildAt(0), 0, spin1.getAdapter().getItemId(0));
 
-        spin2.setSelection(1);
-        spin2.performItemClick(spin2.getChildAt(1), 1, spin2.getAdapter().getItemId(1));
+        if (spin2.getChildCount() > 1) {
+            spin2.setSelection(1);
+            spin2.performItemClick(spin2.getChildAt(1), 1, spin2.getAdapter().getItemId(1));
+        }
 
         int whiteColor = ContextCompat.getColor(getActivity(), R.color.whiteText);
 
@@ -324,6 +326,9 @@ public class CompareGraphsFragment extends Fragment {
     }
 
     private void resetGraphBounds(ArrayList<Object[]>[] dataSets){
+        graph.setVisibility(View.VISIBLE);
+        TextView noData = (TextView)(view.findViewById(R.id.noDataText));
+        noData.setVisibility(View.GONE);
         glr.setNumHorizontalLabels(6);
         if (dataSets[0].size() != 0 && dataSets[1].size()!=0) {
             if (((Date) (dataSets[0].get (0)[2])).getTime() < ((Date) (dataSets[1].get(0)[2])).getTime()) {
@@ -338,6 +343,9 @@ public class CompareGraphsFragment extends Fragment {
             }
 
             //TODO: GRAPH DISAPPEARS WHEN TWO OF THE SAME EXERCISE ARE CHOSEN (SHOULDN'T BE AN ISSUE GREY ONE OUT)
+        } else if (dataSets[0].size() == 0 && dataSets[1].size() == 0){
+            graph.setVisibility(View.GONE);
+            noData.setVisibility(View.VISIBLE);
         } else if (dataSets[0].size() == 0) {
             graph.getViewport().setMinX(((Date) (dataSets[1].get(0)[2])).getTime());
             graph.getViewport().setMaxX(((Date) (dataSets[1].get(0)[2])).getTime() + 432000000); //432000000 is 5 days in milliseconds

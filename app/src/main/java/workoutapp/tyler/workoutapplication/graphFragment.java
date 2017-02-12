@@ -25,11 +25,9 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.OnDataPointTapListener;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.jjoe64.graphview.series.Series;
-import com.nhaarman.supertooltips.ToolTip;
-import com.nhaarman.supertooltips.ToolTipRelativeLayout;
-import com.nhaarman.supertooltips.ToolTipView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -92,9 +90,15 @@ public class graphFragment extends Fragment {
         final Exercise exercisePressed = activity.getUserData().getCardViewExercisePressed();
 
         final DataPoint[] completePoints = new DataPoint[exercisePressed.getCompletedWeights().size()];
-        for (int i = 0; i < completePoints.length; i++) {
-            completePoints[i] = new DataPoint((Date)(exercisePressed.getCompletedWeights().get(i)[2]), (int)(exercisePressed.getCompletedWeights().get(i)[0]));
+
+        int completeCounter = 0;
+        for(Object[] exercise: exercisePressed.getCompletedWeights()) {
+            completePoints[completeCounter] = new DataPoint((Date)(exercise[2]), (int)(exercise[0]));
+            completeCounter++;
         }
+//        for (int i = 0; i < completePoints.length; i++) {
+//            completePoints[i] = new DataPoint((Date)(exercisePressed.getCompletedWeights().get(i)[2]), (int)(exercisePressed.getCompletedWeights().get(i)[0]));
+//        }
         int whiteColor = ContextCompat.getColor(activity, R.color.whiteText);
         int accentColor = ContextCompat.getColor(activity, R.color.colorAccent);
 
@@ -145,9 +149,15 @@ public class graphFragment extends Fragment {
         graph.addSeries(series);
 
         final DataPoint[] incompletePoints = new DataPoint[exercisePressed.getIncompleteWeights().size()];
-        for (int i = 0; i < incompletePoints.length; i++) {
-            incompletePoints[i] = new DataPoint((Date)(exercisePressed.getIncompleteWeights().get(i)[3]), (int)(exercisePressed.getIncompleteWeights().get(i)[0]));
+
+        int incompleteCounter = 0;
+        for(Object[] exercise: exercisePressed.getIncompleteWeights()) {
+            incompletePoints[incompleteCounter] = new DataPoint((Date)(exercise[3]), (int)(exercise[0]));
+            incompleteCounter++;
         }
+//        for (int i = 0; i < incompletePoints.length; i++) {
+//            incompletePoints[i] = new DataPoint((Date)(exercisePressed.getIncompleteWeights().get(i)[3]), (int)(exercisePressed.getIncompleteWeights().get(i)[0]));
+//        }
         final int secondarySeriesColor = ContextCompat.getColor(activity, R.color.extraGraphRed);
 
         PointsGraphSeries<DataPoint> incompleteSeries = new PointsGraphSeries<>(incompletePoints);
@@ -245,7 +255,8 @@ public class graphFragment extends Fragment {
     }
 
     private int findIndex(DataPoint[] datapoints, DataPointInterface dataPointInterface) {
-        for (int i = 0; i < datapoints.length; i++) {
+        int length = datapoints.length;
+        for (int i = 0; i < length; i++) {
             if (datapoints[i] == dataPointInterface) {
                 return i;
             }

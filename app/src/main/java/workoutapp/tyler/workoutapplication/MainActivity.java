@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +16,7 @@ import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.io.Console;
 import java.io.FileInputStream;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements shareFragment.OnF
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         userData = new UserData();
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements shareFragment.OnF
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+//
         exerciseCardsFragment = new exerciseCardsFragment();
         bodyWeightGraphFragment = new BodyWeightGraphFragment();
         compareGraphsFragment = new CompareGraphsFragment();
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements shareFragment.OnF
         fragmentTransaction.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -106,41 +110,49 @@ public class MainActivity extends AppCompatActivity implements shareFragment.OnF
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        // Handle navigation view item clicks here.
+        final int id = item.getItemId();
 
-        if (id == R.id.nav_exercises) {
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragmentContainer, exerciseCardsFragment, "toCalc");
-            fragmentTransaction.addToBackStack("toCalc");
-            setTitle("");
-            setTitle(R.string.main_exercise_cards_fragment_title);
-            fragmentTransaction.commit();
-            currentFragment = exerciseCardsFragment;
-        } else if (id == R.id.nav_BW) {
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragmentContainer, bodyWeightGraphFragment, "toBWGraph");
-            fragmentTransaction.addToBackStack("toBWGraph");
-            setTitle("");
-            setTitle(R.string.body_weight_graph_fragment_title);
-            fragmentTransaction.commit();
-            currentFragment = bodyWeightGraphFragment;
-        } else if (id == R.id.nav_compare) {
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragmentContainer, compareGraphsFragment, "toCompare");
-            fragmentTransaction.addToBackStack("toCompare");
-            setTitle("");
-            setTitle(R.string.compare_graphs_fragment_title);
-            fragmentTransaction.commit();
-            currentFragment = compareGraphsFragment;
-        } else if (id == R.id.nav_share) {
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragmentContainer, ShareFragment, "toShare");
-            fragmentTransaction.addToBackStack("toShare");
-            setTitle("");
-            setTitle(R.string.share_fragment_title);
-            fragmentTransaction.commit();
-            currentFragment = ShareFragment;
-        }
+        Handler mHandler = new Handler();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (id == R.id.nav_exercises) {
+                    android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.fragmentContainer, exerciseCardsFragment, "toCalc");
+                    fragmentTransaction.addToBackStack("toCalc");
+                    setTitle("");
+                    setTitle(R.string.main_exercise_cards_fragment_title);
+                    fragmentTransaction.commit();
+                    currentFragment = exerciseCardsFragment;
+                } else if (id == R.id.nav_BW) {
+                    android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.fragmentContainer, bodyWeightGraphFragment, "toBWGraph");
+                    fragmentTransaction.addToBackStack("toBWGraph");
+                    setTitle("");
+                    setTitle(R.string.body_weight_graph_fragment_title);
+                    fragmentTransaction.commit();
+                    currentFragment = bodyWeightGraphFragment;
+                } else if (id == R.id.nav_compare) {
+                    android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.fragmentContainer, compareGraphsFragment, "toCompare");
+                    fragmentTransaction.addToBackStack("toCompare");
+                    setTitle("");
+                    setTitle(R.string.compare_graphs_fragment_title);
+                    fragmentTransaction.commit();
+                    currentFragment = compareGraphsFragment;
+                } else if (id == R.id.nav_share) {
+                    android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.fragmentContainer, ShareFragment, "toShare");
+                    fragmentTransaction.addToBackStack("toShare");
+                    setTitle("");
+                    setTitle(R.string.share_fragment_title);
+                    fragmentTransaction.commit();
+                    currentFragment = ShareFragment;
+                }
+            }
+        }, 100);
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

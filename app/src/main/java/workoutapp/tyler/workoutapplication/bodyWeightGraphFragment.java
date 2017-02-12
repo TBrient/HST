@@ -81,8 +81,13 @@ public class BodyWeightGraphFragment extends Fragment {
         MainActivity activity = (MainActivity)getActivity();
         ArrayList<Object[]> bodyWeight = activity.getUserData().getBodyWeight();
         DataPoint[] dataPoints = new DataPoint[bodyWeight.size()];
-        for (int i = 0; i < dataPoints.length; i++) {
-            dataPoints[i] = new DataPoint((Date)(bodyWeight.get(i)[2]), (int)(bodyWeight.get(i)[0]));
+//        for (int i = 0; i < dataPoints.length; i++) {
+//            dataPoints[i] = new DataPoint((Date)(bodyWeight.get(i)[2]), (int)(bodyWeight.get(i)[0]));
+//        }
+        int counter1 = 0;
+        for(Object[] bw: bodyWeight) {
+            dataPoints[counter1] = new DataPoint((Date)(bw[2]), (int)(bw[0]));
+            counter1++;
         }
         int whiteColor = ContextCompat.getColor(activity, R.color.whiteText);
         int accentColor = ContextCompat.getColor(activity, R.color.colorAccent);

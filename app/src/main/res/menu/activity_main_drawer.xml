@@ -3,16 +3,16 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:icon="@drawable/barbbellicon"
+            android:icon="@drawable/ic_menu_exercises"
             android:title="Exercises"
             android:id="@+id/nav_exercises" />
         <item
             android:id="@+id/nav_BW"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_menu_body_weight"
             android:title="Body Weight" />
         <item
             android:id="@+id/nav_compare"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_compare"
             android:title="Compare" />
         <item android:title="Share"
             android:id="@+id/nav_share"
