@@ -133,7 +133,7 @@ public class exerciseCardsFragment extends Fragment  {
 
     private void initializeData(){
         MainActivity mainActivity = (MainActivity)getActivity();
-        exercises = mainActivity.getUserData().getExercises();
+        exercises = mainActivity.getUserData().getExercises("Workout 1");
     }
 
     // TODO: Rename method, update argument and hook method into UI event

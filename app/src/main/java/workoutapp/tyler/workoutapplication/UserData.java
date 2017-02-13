@@ -12,7 +12,8 @@ import java.util.Date;
 
 public class UserData {
 
-    private ArrayList<Exercise> exercises;
+    private ArrayList<ArrayList<Exercise>> exercises;
+    private ArrayList<String> categoryTitles;
     private ArrayList<Object[]> bodyWeight; //weight, nothing, date
     private Exercise cardViewExercisePressed;
     //private int workoutNum; //1-18 Number of Days worked out in that session so far
@@ -23,12 +24,20 @@ public class UserData {
         //workoutNum = workoutNumber;
     }
 
-    public ArrayList<Exercise> getExercises() {
-        return exercises;
+    public ArrayList<Exercise> getExercises(String category) {
+        int index = categoryTitles.indexOf(category);
+        return exercises.get(index);
     }
 
     public void addWorkout(Exercise exercise) {
-        this.exercises.add(exercise);
+        int category = 0;
+        for (int i = 0; i < exercises.size(); i++) {
+            if (exercises.get(i).contains(exercise)) {
+                category = i;
+                break;
+            }
+        }
+        this.exercises.get(category).add(exercise);
     }
 
 //    public int getWorkoutNum() {
@@ -39,12 +48,9 @@ public class UserData {
 //        this.workoutNum = workoutNum;
 //    }
 
-    public void setMainWorkout(Exercise exercise) {
-        this.exercises.add(0, exercise);
-    }
 
-    public Exercise getExercise(int index) {
-        return exercises.get(index);
+    public Exercise getExercise(String category, int index) {
+        return exercises.get(categoryTitles.indexOf(category)).get(index);
     }
 
     public Exercise getCardViewExercisePressed() {
@@ -55,8 +61,8 @@ public class UserData {
         this.cardViewExercisePressed = cardViewExercisePressed;
     }
 
-    public void setExercises(ArrayList<Exercise> exercises) {
-        this.exercises = exercises;
+    public void setExercises(ArrayList<Exercise> exercises, String category) {
+        this.exercises.set(categoryTitles.indexOf(category), exercises);
     }
 
     public ArrayList<Object[]> getBodyWeight() {
