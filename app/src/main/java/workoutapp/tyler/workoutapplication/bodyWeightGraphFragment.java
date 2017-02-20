@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,12 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
+import com.jjoe64.graphview.series.Series;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -79,8 +84,8 @@ public class BodyWeightGraphFragment extends Fragment {
 
         GraphView graph = (GraphView)view.findViewById(R.id.graph);
         MainActivity activity = (MainActivity)getActivity();
-        ArrayList<Object[]> bodyWeight = activity.getUserData().getBodyWeight();
-        DataPoint[] dataPoints = new DataPoint[bodyWeight.size()];
+        final ArrayList<Object[]> bodyWeight = activity.getUserData().getBodyWeight();
+        final DataPoint[] dataPoints = new DataPoint[bodyWeight.size()];
 //        for (int i = 0; i < dataPoints.length; i++) {
 //            dataPoints[i] = new DataPoint((Date)(bodyWeight.get(i)[2]), (int)(bodyWeight.get(i)[0]));
 //        }
@@ -97,6 +102,28 @@ public class BodyWeightGraphFragment extends Fragment {
         series.setDataPointsRadius(20);
         series.setThickness(15);
         series.setColor(accentColor);
+
+        series.setOnDataPointTapListener(new OnDataPointTapListener() {
+            @Override
+            public void onTap(Series series, DataPointInterface dataPointInterface) {
+                int index = findIndex(dataPoints, dataPointInterface);
+
+                Object[] info = bodyWeight.get(index);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Point Info");
+                builder.setMessage("Message");
+                AlertDialog alertDialog = builder.show();
+                String line1 = "Body Weight: " + info[0];
+
+                TextView messageView = (TextView) alertDialog.findViewById(android.R.id.message);
+                String line4 = new SimpleDateFormat("MM/dd/yyyy").format((Date)info[2]);
+                messageView.setText(line1 + "\n" +
+                        line4 + "\n");
+                alertDialog.show();
+                alertDialog.getWindow().setLayout(800, 700);
+            }
+        });
 
         graph.addSeries(series);
 
@@ -152,6 +179,16 @@ public class BodyWeightGraphFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private int findIndex(DataPoint[] datapoints, DataPointInterface dataPointInterface) {
+        int length = datapoints.length;
+        for (int i = 0; i < length; i++) {
+            if (datapoints[i] == dataPointInterface) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

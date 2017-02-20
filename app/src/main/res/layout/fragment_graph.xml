@@ -24,9 +24,4 @@
 
     </LinearLayout>
 
-    <com.nhaarman.supertooltips.ToolTipRelativeLayout
-        android:id="@+id/toolTipLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
 </RelativeLayout>

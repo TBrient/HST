@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,12 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
+import com.jjoe64.graphview.series.Series;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -151,6 +156,58 @@ public class CompareGraphsFragment extends Fragment {
                 series1.setDataPointsRadius(20);
                 series1.setThickness(15);
                 series1.setColor(Color.RED); //TODO: Change to a more material color.
+
+                final DataPoint[] dataPoints = datapoints;
+
+                series1.setOnDataPointTapListener(new OnDataPointTapListener() {
+                    @Override
+                    public void onTap(Series series, DataPointInterface dataPointInterface) {
+                        int index = findIndex(dataPoints, dataPointInterface);
+
+                        Object[] info = dataSets[0].get(index);
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle("Point Info");
+                        builder.setMessage("Message");
+                        AlertDialog alertDialog = builder.show();
+                        String line1 = names[0];
+                        String line2;
+                        String line3;
+                        String line4;
+                        String line5;
+                        TextView messageView = (TextView) alertDialog.findViewById(android.R.id.message);
+                        if (line1.equals("Body Weight")) {
+                            line2 = "Body Weight: " + info[0];
+                            line5 = new SimpleDateFormat("MM/dd/yyyy").format((Date)info[2]);
+                            messageView.setText(line1 + "\n" +
+                                    line2 + "\n" +
+                                    line5 + "\n");
+                        } else {
+                            line2 = "Weight: " + info[0];
+                            if ((int)info[1] > 1) {
+                                line3 = info[1] + " Sets";
+                            } else {
+                                line3 = info[1] + " Set";
+                            }
+                            if ((int)info[2] > 1) {
+                                line4 = info[2] + " Reps";
+                            } else {
+                                line4 = info[2] + " Rep";
+                            }
+                            line5 = new SimpleDateFormat("MM/dd/yyyy").format((Date)info[2]);
+                            messageView.setText(line1 + "\n" +
+                                    line2 + "\n" +
+                                    line3 + "\n" +
+                                    line4 + "\n" +
+                                    line5 + "\n");
+                        }
+
+
+                        alertDialog.show();
+                        alertDialog.getWindow().setLayout(800, 700);
+                    }
+                });
+
                 graph.addSeries(series1);
                 glr.setNumVerticalLabels(5);
                 glr.setNumHorizontalLabels(6);
@@ -215,6 +272,7 @@ public class CompareGraphsFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View views, int i, long l) {
                 DataPoint[] datapoints;
+                Exercise secondDataSet = null;
                 if (spin2.getSelectedItemPosition() == 0) {
                     ArrayList<Object[]> bodyWeight = mainActivity.getUserData().getBodyWeight();
                     dataSets[1] = bodyWeight;
@@ -224,7 +282,7 @@ public class CompareGraphsFragment extends Fragment {
                     }
                     names[1] = "Body Weight";
                 } else {
-                    Exercise secondDataSet = mainActivity.getUserData().getExercise(spin2.getSelectedItemPosition()-1);
+                    secondDataSet = mainActivity.getUserData().getExercise(spin2.getSelectedItemPosition()-1);
                     datapoints = new DataPoint[secondDataSet.getCompletedWeights().size()];
                     dataSets[1] = secondDataSet.getCompletedWeights();
                     for (int j = 0; j < datapoints.length; j++) {
@@ -238,6 +296,57 @@ public class CompareGraphsFragment extends Fragment {
                 series2.setDataPointsRadius(20);
                 series2.setThickness(15);
                 series2.setColor(Color.GREEN); //TODO: Change to a more material color.
+
+                final DataPoint[] dataPoints = datapoints;
+
+//                final Exercise dataSet2 = secondDataSet;
+
+                series2.setOnDataPointTapListener(new OnDataPointTapListener() {
+                    @Override
+                    public void onTap(Series series, DataPointInterface dataPointInterface) {
+                        int index = findIndex(dataPoints, dataPointInterface);
+
+                        Object[] info = dataSets[1].get(index);
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle("Point Info");
+                        builder.setMessage("Message");
+                        AlertDialog alertDialog = builder.show();
+                        String line1 = names[1];
+                        String line2;
+                        String line3;
+                        String line4;
+                        String line5;
+                        TextView messageView = (TextView) alertDialog.findViewById(android.R.id.message);
+                        if (line1.equals("Body Weight")) {
+                            line2 = "Body Weight: " + info[0];
+                            line5 = new SimpleDateFormat("MM/dd/yyyy").format((Date)info[2]);
+                            messageView.setText(line1 + "\n" +
+                                    line2 + "\n" +
+                                    line5 + "\n");
+                        } else {
+                            line2 = "Weight: " + info[0];
+                            if ((int)info[1] > 1) {
+                                line4 = info[1] + " Reps";
+                            } else {
+                                line4 = info[1] + " Rep";
+                            }
+                            line3 = " ";
+//                            line3 = String.valueOf(dataSet2.getNumberOfSets());
+                            line5 = new SimpleDateFormat("MM/dd/yyyy").format((Date)info[2]);
+                            messageView.setText(line1 + "\n" +
+                                    line2 + "\n" +
+                                    line3 + "\n" +
+                                    line4 + "\n" +
+                                    line5 + "\n");
+                        }
+
+
+                        alertDialog.show();
+                        alertDialog.getWindow().setLayout(800, 700);
+                    }
+                });
+
                 graph.addSeries(series2);
 
                 glr.setNumHorizontalLabels(6);
@@ -323,6 +432,16 @@ public class CompareGraphsFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private int findIndex(DataPoint[] datapoints, DataPointInterface dataPointInterface) {
+        int length = datapoints.length;
+        for (int i = 0; i < length; i++) {
+            if (datapoints[i] == dataPointInterface) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private void resetGraphBounds(ArrayList<Object[]>[] dataSets){
