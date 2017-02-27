@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -166,7 +167,7 @@ public class CompareGraphsFragment extends Fragment {
 
                         Object[] info = dataSets[0].get(index);
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AlertDialogCustom));
                         builder.setTitle("Point Info");
                         builder.setMessage("Message");
                         AlertDialog alertDialog = builder.show();
@@ -308,7 +309,7 @@ public class CompareGraphsFragment extends Fragment {
 
                         Object[] info = dataSets[1].get(index);
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AlertDialogCustom));
                         builder.setTitle("Point Info");
                         builder.setMessage("Message");
                         AlertDialog alertDialog = builder.show();

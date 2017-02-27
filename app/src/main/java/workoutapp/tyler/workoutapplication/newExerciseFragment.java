@@ -106,7 +106,6 @@ public class newExerciseFragment extends Fragment {
 
         MainActivity mainActivity = (MainActivity)getActivity();
         ActionBar actionBar = mainActivity.getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         Button cancelButton = (Button)view.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {

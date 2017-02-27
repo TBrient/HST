@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -115,7 +117,7 @@ public class graphFragment extends Fragment {
 
                 Object[] info = exercisePressed.getCompletedWeights().get(index);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AlertDialogCustom));
                 builder.setTitle("Point Info");
                 builder.setMessage("Message");
                 AlertDialog alertDialog = builder.show();
@@ -139,7 +141,7 @@ public class graphFragment extends Fragment {
                         line3 + "\n" +
                         line4 + "\n");
                 alertDialog.show();
-                alertDialog.getWindow().setLayout(800, 700);
+                alertDialog.getWindow().setLayout(800, 800);
 
                 //TODO: Create a custom popup so that it changes to the right color/doesn't look so bad
 
@@ -175,7 +177,7 @@ public class graphFragment extends Fragment {
 
                 Object[] info = exercisePressed.getIncompleteWeights().get(index);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AlertDialogCustom));
                 builder.setTitle("Point Info");
                 builder.setMessage("Message");
                 AlertDialog alertDialog = builder.show();
@@ -199,7 +201,7 @@ public class graphFragment extends Fragment {
                         line3 + "\n" +
                         line4 + "\n");
                 alertDialog.show();
-                alertDialog.getWindow().setLayout(800, 700);
+                alertDialog.getWindow().setLayout(800, 800);
 
                 //TODO: Create a custom popup so that it changes to the right color/doesn't look so bad
 
